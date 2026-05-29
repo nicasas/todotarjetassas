@@ -3,7 +3,7 @@ import {
   Bell,
   Lock,
   AlertCircle,
-  Zap,
+  Receipt,
   CreditCard,
   ChevronRight,
 } from "lucide-react";
@@ -18,10 +18,13 @@ export default function ServicioHome() {
           <p className="text-[var(--text-muted)] text-xs">Bienvenido</p>
           <h1 className="text-[22px] font-bold tracking-tight">Hola, Carolina</h1>
         </div>
-        <button className="relative p-2.5 rounded-full bg-[var(--surface-2)] border border-[var(--border)]">
+        <Link
+          href="/servicio/alerta"
+          className="relative p-2.5 rounded-full bg-[var(--surface-2)] border border-[var(--border)] block"
+        >
           <Bell size={18} />
           <span className="absolute top-1.5 right-1.5 w-2 h-2 rounded-full bg-[var(--primary)]" />
-        </button>
+        </Link>
       </div>
 
       <div className="px-5">
@@ -44,7 +47,7 @@ export default function ServicioHome() {
             </span>
           </div>
           <div>
-            <p className="text-[11px] text-[var(--text-muted)] mb-0.5">Saldo disponible</p>
+            <p className="text-[11px] text-[var(--text-muted)] mb-0.5">Límite disponible</p>
             <p className="text-2xl font-bold tracking-tight">$45,200.00</p>
           </div>
         </div>
@@ -59,7 +62,7 @@ export default function ServicioHome() {
             label="Reportar cargo"
             href="/servicio/reportar"
           />
-          <QuickAction icon={<Zap size={18} />} label="Activación" href="#" />
+          <QuickAction icon={<Receipt size={18} />} label="Facturación" href="#" />
           <QuickAction icon={<CreditCard size={18} />} label="Activar" href="#" />
         </div>
 
@@ -91,7 +94,7 @@ export default function ServicioHome() {
         </Link>
       </div>
 
-      <BottomNav active="Inicio" />
+      <BottomNav active="Home" variant="servicio" />
     </Screen>
   );
 }

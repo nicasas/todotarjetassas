@@ -1,0 +1,573 @@
+% =====================================================================
+% Taller 2 — Bloque 3: Arquitectura de Solución (Todo Tarjetas S.A.)
+% Documento standalone — compila por sí solo en Overleaf (pdfLaTeX).
+% Las imágenes deben estar en la carpeta artefactos/ junto a este .tex.
+% =====================================================================
+
+\documentclass[11pt,letterpaper]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[spanish,es-tabla]{babel}
+\usepackage[margin=2.2cm]{geometry}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{tabularx}
+\usepackage{array}
+\usepackage{longtable}
+\usepackage{xltabular}
+\usepackage{ragged2e}
+\usepackage{xcolor}
+\usepackage{caption}
+\usepackage{enumitem}
+\usepackage{titlesec}
+\usepackage{parskip}
+\usepackage[hidelinks]{hyperref}
+
+\captionsetup{font=small,labelfont=bf}
+\titleformat{\section}{\Large\bfseries}{\thesection}{0.6em}{}
+\titleformat{\subsection}{\large\bfseries}{\thesubsection}{0.5em}{}
+\titleformat{\subsubsection}{\normalsize\bfseries}{\thesubsubsection}{0.4em}{}
+
+\begin{document}
+
+\section{Bloque 3 — Arquitectura de Solución}
+
+Esta sección define la arquitectura de solución que soporta los dos CVPs
+priorizados en el Taller~1 y refinados en este Taller~2. La arquitectura se
+diseña como una plataforma única compartida entre ambos CVPs, con servicios
+diferenciados por línea verde, evitando la duplicación de capacidades de
+datos, integración y seguridad. La nomenclatura usa las convenciones
+\textbf{NEW}~/~\textbf{MODIFY}~/~\textbf{KEEP} sobre el activo arquitectónico
+actual de Todo Tarjetas S.A.
+
+\medskip
+
+\noindent\textbf{Recordatorio de los CVPs:}
+\begin{itemize}[leftmargin=1.4em,topsep=2pt,itemsep=2pt]
+  \item \textbf{CVP 1 — Asistente GenAI Omnicanal + Autoservicio.} Resuelve
+        solicitudes frecuentes de tarjetahabientes y comercios (PQR,
+        bloqueos, reclamos, facturación, postventa) en minutos, $24/7$,
+        con escalamiento contextual cuando aplique.
+  \item \textbf{CVP 2 — Originación 100\,\% Digital + Tarjeta Virtual
+        Instantánea.} Onboarding mobile-first con biometría, scoring ML en
+        tiempo real, emisión virtual y primer consumo en la misma sesión
+        (segmento 18--25).
+\end{itemize}
+
+\subsection{Vista global de la arquitectura}
+\label{sec:vista-global}
+
+La Figura~\ref{fig:arq-solucion} muestra la vista global de la arquitectura
+de solución, con sus cinco capas (Datos~e~información, Aplicación,
+Integración, Cloud, OnPremise) y la convención de NEW/MODIFY/KEEP aplicada
+sobre el inventario actual de Todo Tarjetas. La arquitectura es
+multi-tenant para soportar las filiales del Banco de Los~Alpes y, en
+una segunda ola, otros bancos de la región.
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=\textwidth]{artefactos/01-arquitectura-solucion.png}
+  \caption{Arquitectura de solución global — vista por capas con NEW/MODIFY/KEEP.}
+  \label{fig:arq-solucion}
+\end{figure}
+
+\subsection{Zonas de la arquitectura}
+\label{sec:zonas}
+
+\subsubsection{Elementos estructuradores}
+\label{sec:estructuradores}
+
+Los elementos estructuradores son los componentes que organizan la
+arquitectura y absorben la mayor parte de la responsabilidad técnica de
+ambos CVPs. Se agrupan en cuatro vistas, cada una con su propio artefacto.
+
+\paragraph{Vista de canales (Figura~\ref{fig:arq-canales}).}
+Concentra los puntos de contacto con tarjetahabientes, comercios, empleados
+y bancos partners. La capa de \textbf{API~Management} aparece dos veces
+—antes y después del bus de integración— para asegurar que toda interacción
+entre canales y capacidades de negocio sea gobernada con políticas de
+seguridad, cuotas y observabilidad.
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=\textwidth]{artefactos/03-arquitectura-canales.png}
+  \caption{Arquitectura de canales — clientes, empleados/aliados y partners,
+  conectados a través de API Management hacia microservicios y capacidades BSS/OSS.}
+  \label{fig:arq-canales}
+\end{figure}
+
+\paragraph{Vista de aplicación (Figura~\ref{fig:arq-aplicacion}).}
+Separa los \emph{Operation Support Systems} (Switch, Conciliación,
+Adquirencia, GL, Communication~Mgt), los \emph{Business Support Systems}
+(Core~TDC, Core~Bancario del Banco~Los~Alpes, Inversión, CRM, Billing) y
+los \emph{Motores} (Reglas, Decisión, Anti-fraude/AML, Scoring~ML, OCR,
+GenAI Orchestrator). El Core~TDC es propio de Todo~Tarjetas, mientras que
+el Core~Bancario es consumido como servicio del Banco~Los~Alpes vía APIs.
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=\textwidth]{artefactos/04-arquitectura-aplicacion.png}
+  \caption{Arquitectura de aplicación — OSS, BSS, Motores y Data~Management.
+  Los motores nuevos (Scoring~ML, GenAI, OCR) habilitan la lógica de los
+  dos CVPs.}
+  \label{fig:arq-aplicacion}
+\end{figure}
+
+\paragraph{Vista de información (Figura~\ref{fig:arq-informacion}).}
+Aterriza la arquitectura \textbf{Fast-Data} y la analítica avanzada que
+alimenta a ambos CVPs. Combina capacidades de stream (Flink), batch
+(Spark) y serving (Redis, Elasticsearch) sobre un \emph{Lakehouse Delta}
+único que cumple con los reportes regulatorios de SOX/Basilea~II y DIAN
+mencionados en el caso.
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=\textwidth]{artefactos/02-arquitectura-informacion.png}
+  \caption{Arquitectura de información (Fast-Data) — analítica avanzada
+  (GenAI, ML, Big~Data, Personalización), real-time analytics, almacenamiento
+  unificado y fuentes internas/externas.}
+  \label{fig:arq-informacion}
+\end{figure}
+
+\paragraph{Resumen de los elementos estructuradores.}
+La Tabla~\ref{tab:estructuradores} consolida los componentes principales
+clasificados por capa, con su tipo de cambio sobre el activo actual.
+
+{\small
+\renewcommand{\arraystretch}{1.2}
+\begin{xltabular}{\textwidth}{@{}>{\RaggedRight\arraybackslash}p{3.4cm}@{\hspace{6pt}}>{\RaggedRight\arraybackslash}X@{\hspace{6pt}}>{\RaggedRight\arraybackslash}p{1.8cm}@{}}
+\caption{Elementos estructuradores por capa — clasificación NEW/MODIFY/KEEP.\label{tab:estructuradores}}\\
+\toprule
+\textbf{Capa} & \textbf{Componente} & \textbf{Tipo} \\
+\midrule
+\endfirsthead
+\multicolumn{3}{l}{\emph{(continuación de la Tabla \ref{tab:estructuradores})}}\\
+\toprule
+\textbf{Capa} & \textbf{Componente} & \textbf{Tipo} \\
+\midrule
+\endhead
+\midrule
+\multicolumn{3}{r}{\emph{Continúa en la página siguiente}}\\
+\endfoot
+\bottomrule
+\endlastfoot
+Canales & App móvil, Web Clientes, WhatsApp Business, Wallet digital & NEW \\
+Canales & Backoffice agentes (CVP1), Portal Comercios, Backoffice riesgo & MODIFY \\
+Canales & IVR, SMS, Kiosko, ATM/POS & KEEP \\
+\midrule
+Integración & API Gateway, Event Bus (Kafka), BFF por canal & NEW \\
+Integración & ESB-OSB existente, BUS Empresarial, API Management & MODIFY \\
+Integración & WebServices Legados, Hub Holding (Banco Los Alpes) & KEEP \\
+\midrule
+Aplicación~/~OSS & Switch propio, Conciliación, GL/Contabilidad & KEEP \\
+Aplicación~/~OSS & Adquirencia (afiliación digital de comercios) & MODIFY \\
+Aplicación~/~BSS & Core TDC, Core Bancario Banco Los Alpes, Inversión & KEEP \\
+Aplicación~/~BSS & CRM, Billing \& Rating, Catálogo de Productos & MODIFY \\
+Aplicación~/~Motores & Motor de Reglas (riesgo) & MODIFY \\
+Aplicación~/~Motores & Motor de Decisión, Scoring ML ($<60$\,s), Anti-fraude/AML, OCR/Liveness, GenAI Orchestrator, Knowledge Base/RAG, Escalation Engine & NEW \\
+\midrule
+Datos & Lakehouse Delta, Vector~DB (RAG), Feature~Store, Redis, Elasticsearch & NEW \\
+Datos & DWH, Modelo de datos unificado, Inteligencia comercial & MODIFY \\
+Datos & SQL Operacional, NoSQL, ECM Documental & KEEP \\
+\midrule
+Cloud & SaaS (GenAI APIs, Truora/Onfido), PaaS (Kafka, Flink, Spark), IaaS (S3, K8s) & NEW \\
+\midrule
+OnPremise & Switch propio, Core TDC, Data Center, Security Monitoring & KEEP \\
+OnPremise & Core Bancario Banco Los Alpes (consumido vía APIs) & KEEP \\
+\end{xltabular}}
+
+\subsubsection{Relaciones entre componentes}
+\label{sec:relaciones}
+
+La arquitectura combina tres patrones de comunicación según la naturaleza
+de la interacción y la latencia objetivo. La Tabla~\ref{tab:relaciones}
+formaliza estas relaciones para los flujos críticos de los dos CVPs.
+
+{\small
+\renewcommand{\arraystretch}{1.2}
+\begin{xltabular}{\textwidth}{@{}>{\RaggedRight\arraybackslash}p{3.6cm}@{\hspace{5pt}}>{\RaggedRight\arraybackslash}p{3.6cm}@{\hspace{5pt}}>{\RaggedRight\arraybackslash}X@{\hspace{5pt}}>{\RaggedRight\arraybackslash}p{2.3cm}@{}}
+\caption{Relaciones entre componentes — clasificación por patrón y latencia objetivo.\label{tab:relaciones}}\\
+\toprule
+\textbf{Origen} & \textbf{Destino} & \textbf{Patrón / Tipo} & \textbf{Latencia} \\
+\midrule
+\endfirsthead
+\multicolumn{4}{l}{\emph{(continuación de la Tabla \ref{tab:relaciones})}}\\
+\toprule
+\textbf{Origen} & \textbf{Destino} & \textbf{Patrón / Tipo} & \textbf{Latencia} \\
+\midrule
+\endhead
+\midrule
+\multicolumn{4}{r}{\emph{Continúa en la página siguiente}}\\
+\endfoot
+\bottomrule
+\endlastfoot
+App móvil / Web & API Gateway & REST sync vía BFF & $<200$\,ms \\
+API Gateway & GenAI Orchestrator & REST sync (chat turn) & $<2$\,s \\
+GenAI Orchestrator & OpenAI / Anthropic & HTTPS sync (con cache) & $0{,}8$--$2$\,s \\
+GenAI Orchestrator & Knowledge Base (RAG) & gRPC sync sobre Vector~DB & $<150$\,ms \\
+Onboarding Orchestrator & Identity Verification & REST sync (Truora) & $<3$\,s \\
+Identity Verification & Scoring ML & gRPC sync & $<60$\,s end-to-end \\
+Scoring ML & Motor de Reglas & gRPC sync & $<200$\,ms \\
+Card Issuance & Switch / Core TDC & Mensajería ISO~8583 & $<400$\,ms \\
+Card Issuance & VISA / MC / AMEX (tokenización) & REST sync sobre franquicia & $<1{,}2$\,s \\
+\midrule
+Cualquier microservicio & Event Bus (Kafka) & Async event-driven & $<50$\,ms (publish) \\
+Event Bus & Notification & Async pub/sub & $<300$\,ms (delivery) \\
+Event Bus & Lakehouse (CDC) & Async sink connectors & near real-time \\
+Event Bus & Audit \& Compliance & Async append-only & near real-time \\
+\midrule
+Switch / Core TDC & Stream Processor (Flink) & Streaming continuo & $<100$\,ms (window) \\
+Flink & Real-Time Analytics & Streaming push & $<500$\,ms \\
+Spark & Lakehouse Delta & Batch programado & $24$\,h / $30$\,d \\
+Spark & DWH & Batch programado & nocturno (SOX/DIAN) \\
+\midrule
+Open Banking & APIs expuestas TT & REST sync (OAuth~2.0) & $<800$\,ms \\
+Filiales / Bancos partners & Hub Holding $\to$ API Gateway & REST sync (multi-tenant) & $<800$\,ms \\
+\end{xltabular}}
+
+\noindent\textbf{Principio de desacople.} El uso del Event~Bus permite que
+una falla en el Scoring~ML del CVP~2 \emph{no} bloquee al Asistente
+GenAI del CVP~1: cada CVP tiene su propio dominio de fallo y cada
+microservicio publica/consume eventos de manera independiente.
+
+\subsubsection{Fuerzas externas}
+\label{sec:fuerzas}
+
+La Tabla~\ref{tab:fuerzas} resume las fuerzas externas que condicionan el
+diseño y la operación de la arquitectura. Estas fuerzas se traducen
+directamente en requerimientos no funcionales y en componentes específicos
+de la solución.
+
+{\small
+\renewcommand{\arraystretch}{1.25}
+\begin{xltabular}{\textwidth}{@{}>{\RaggedRight\arraybackslash}p{4.6cm}@{\hspace{8pt}}>{\RaggedRight\arraybackslash}X@{}}
+\caption{Fuerzas externas e impacto sobre la arquitectura.\label{tab:fuerzas}}\\
+\toprule
+\textbf{Fuerza externa} & \textbf{Impacto sobre la arquitectura} \\
+\midrule
+\endfirsthead
+\multicolumn{2}{l}{\emph{(continuación de la Tabla \ref{tab:fuerzas})}}\\
+\toprule
+\textbf{Fuerza externa} & \textbf{Impacto sobre la arquitectura} \\
+\midrule
+\endhead
+\midrule
+\multicolumn{2}{r}{\emph{Continúa en la página siguiente}}\\
+\endfoot
+\bottomrule
+\endlastfoot
+Regulación SFC, SOX y Basilea~II & Cifrado en tránsito y en reposo, logs
+inmutables (Audit \& Compliance), trazabilidad punta a punta de cada
+operación, controles de riesgo operativo y financiero. \\
+Estándar PCI-DSS & PAN, CVV y datos de tarjeta nunca residen en sistemas
+no certificados; tokenización obligatoria antes de cualquier procesamiento
+analítico. \\
+Ley~1581 (datos personales) & Consentimiento explícito para biometría
+(CVP~2), separación de PII en stores cifrados, gobierno de datos centralizado. \\
+Listas obligatorias (DataCrédito, Cifin, Clinton, Min~Hacienda~AML) &
+Integración síncrona vía API Gateway con caching de $90$ días para
+DataCrédito (reducción de costo por consulta repetida). \\
+Open Banking / Open Finance & Las APIs deben prepararse para exponer y
+consumir datos bajo estándar de Open Finance sin rediseño futuro;
+versionado y catálogo de APIs (ver \S\ref{sec:apis}). \\
+Apple Pay / Google Pay & Tokenización obligatoria de la tarjeta virtual
+del CVP~2; tiempo de \emph{push-to-wallet} $<3$\,s. \\
+Franquicias VISA / Mastercard / AMEX & Protocolos ISO~8583 vigentes en el
+Switch; SLA de respuesta $800$\,ms--$2$\,s; absorber esa latencia sin
+bloquear el flujo del usuario. \\
+Proveedores GenAI (OpenAI, Anthropic) & Latencia variable; se requiere
+caching de respuestas frecuentes, fallback a respuestas predefinidas y
+control de costos por token. \\
+Plan regional Banco~Los~Alpes & La plataforma debe ser \emph{multi-tenant}
+desde el día~1: separación lógica por filial/banco, configurabilidad de
+reglas por país y consolidación analítica al holding. \\
+Paperless y self-service (Anexo~1 del caso) & ECM digital, biometría
+remota, firma electrónica, eliminación de procedimientos manuales en
+originación. \\
+\end{xltabular}}
+
+\subsection{Arquitectura Fast-Data}
+\label{sec:fastdata}
+
+Ambos CVPs entregan insights en tiempo real al usuario o al backoffice y,
+en paralelo, alimentan modelos analíticos y reportes regulatorios. Por
+esa razón se adopta un \textbf{patrón Lambda} (Speed~+~Batch~+~Serving)
+sobre un \emph{Lakehouse Delta} único: el Speed Layer absorbe la
+operación en tiempo real, el Batch Layer mantiene la verdad histórica,
+los modelos ML y los reportes regulatorios, y el Serving Layer entrega
+respuestas $<100$\,ms a la app y al backoffice. Esta vista corresponde a
+la Figura~\ref{fig:arq-informacion}.
+
+\subsubsection{Stack tecnológico de Fast-Data}
+
+\begin{itemize}[leftmargin=1.4em,topsep=2pt,itemsep=3pt]
+  \item \textbf{Ingesta y Speed Layer.} Apache~Kafka como bus central de
+        eventos en tiempo real (latencia objetivo $<100$\,ms publish). Apache
+        Flink para stream processing: detección de SLA en riesgo,
+        clasificación de intención del usuario en el asistente GenAI,
+        deteccion de abandono de sesión en originación, detección de
+        fraude transaccional sobre el Switch.
+  \item \textbf{Batch Layer.} Apache Spark sobre el Lakehouse para:
+        reentrenamiento del modelo de scoring cada $30$~días, actualización
+        de la base de conocimiento del asistente, agregaciones para
+        reportes regulatorios SOX/Basilea~II/DIAN, consolidación analítica
+        al holding del Banco~Los~Alpes.
+  \item \textbf{Serving Layer.} Redis para cache de estado del caso,
+        perfil del cliente y respuestas frecuentes del GenAI;
+        Elasticsearch para búsqueda en la base de conocimiento; Vector~DB
+        para retrieval (RAG) del asistente.
+  \item \textbf{Lakehouse.} AWS~S3 + Delta~Lake como fuente de verdad
+        para compliance, auditoría y reentrenamiento de modelos. Almacena
+        datos estructurados (tablas) y no estructurados (transcripciones,
+        documentos, imágenes biométricas tokenizadas).
+\end{itemize}
+
+\subsubsection{Casos de uso de Fast-Data por CVP}
+
+\paragraph{CVP~1 — Asistente GenAI.} Cada turno de conversación
+(usuario $\to$ asistente) genera un evento Kafka que es consumido por:
+(i)~Flink para clasificar intención y disparar alertas de SLA en riesgo;
+(ii)~el GenAI~Orchestrator que arma el contexto vía RAG; (iii)~el Audit
+\& Compliance para trazabilidad inmutable. El estado del caso (SLA,
+agente asignado, próximos pasos) se sirve al cliente desde Redis con
+latencia $<100$\,ms.
+
+\paragraph{CVP~2 — Originación digital.} Cada paso del onboarding emite
+un evento (\texttt{originacion\_iniciada}, \texttt{identidad\_validada},
+\texttt{tarjeta\_emitida}, \texttt{primer\_consumo}). Flink calcula
+señales de scoring alternativo en tiempo real, detecta abandono de
+sesión y dispara recuperación automática vía Notification. La decisión
+de scoring es servida desde el Feature~Store en $<60$\,s end-to-end.
+
+\subsection{Sistemas de información — matriz interno/externo $\times$
+estructurado/no estructurado}
+\label{sec:sistemas}
+
+La Tabla~\ref{tab:matriz-sistemas} clasifica todos los sistemas que
+alimentan la plataforma en los cuatro cuadrantes solicitados por el
+enunciado, indicando el dato que se toma de cada uno.
+
+\begin{table}[htbp]
+\centering
+\caption{Matriz de sistemas de información — interno/externo
+$\times$ estructurado/no estructurado.}
+\label{tab:matriz-sistemas}
+\renewcommand{\arraystretch}{1.18}
+\footnotesize
+\begin{tabularx}{\textwidth}{l X X}
+\toprule
+ & \textbf{Estructurado} & \textbf{No estructurado} \\
+\midrule
+\textbf{Interno (TT)}
+&
+\begin{minipage}[t]{\linewidth}
+\textbullet~\textbf{Switch de procesamiento}: log de transacciones, autorización, monto, código del cliente, franquicia. \\
+\textbullet~\textbf{Core TDC}: saldos, límites, cupos, historial de pagos, mora. \\
+\textbullet~\textbf{Motor de Reglas (riesgo)}: reglas crediticias base, calificaciones internas. \\
+\textbullet~\textbf{CRM}: historial de PQR, segmento, datos de contacto. \\
+\textbullet~\textbf{Billing}: extractos, cuotas de manejo. \\
+\textbullet~\textbf{Conciliación / GL}: comisiones, IVAs, retefuente. \\
+\textbullet~\textbf{Adquirencia}: comercios afiliados, datafonos, tarifas.
+\end{minipage}
+&
+\begin{minipage}[t]{\linewidth}
+\textbullet~\textbf{Logs Call Center}: grabaciones, transcripciones, motivos. \\
+\textbullet~\textbf{ECM Documental}: cédulas escaneadas, soportes laborales, formularios firmados. \\
+\textbullet~\textbf{Eventos App / Web / Chat}: clickstream, intentos del asistente, abandono de sesión. \\
+\textbullet~\textbf{Imágenes biométricas}: selfies, fotos de documento (tokenizadas).
+\end{minipage}
+\\
+\midrule
+\textbf{Externo}
+&
+\begin{minipage}[t]{\linewidth}
+\textbullet~\textbf{DataCrédito / TransUnion}: score crediticio, historial de deuda. \\
+\textbullet~\textbf{Cifin}: información financiera complementaria. \\
+\textbullet~\textbf{Min Hacienda (AML)}: lista anti-lavado de dinero. \\
+\textbullet~\textbf{Lista Clinton (Fiscalía)}: control de operaciones. \\
+\textbullet~\textbf{Registraduría}: validación de identidad. \\
+\textbullet~\textbf{Truora / Onfido}: score de confianza biométrica, liveness. \\
+\textbullet~\textbf{Franquicias VISA/MC/AMEX}: códigos de autorización cross-emisor, tokenización. \\
+\textbullet~\textbf{Core Bancario Banco Los Alpes}: cuentas de ahorros/corrientes para abonos.
+\end{minipage}
+&
+\begin{minipage}[t]{\linewidth}
+\textbullet~\textbf{GenAI APIs (OpenAI / Anthropic)}: respuestas conversacionales del LLM, embeddings. \\
+\textbullet~\textbf{WhatsApp Business API}: mensajes conversacionales entrantes y salientes. \\
+\textbullet~\textbf{Apple Pay / Google Pay}: payload de tokenización, eventos de aprovisionamiento. \\
+\textbullet~\textbf{Redes sociales (futura ola)}: señales sociales del segmento joven (visión 2027 del caso).
+\end{minipage}
+\\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\subsection{Visión de APIs}
+\label{sec:apis}
+
+El principio \emph{API-first} es transversal a la arquitectura. Toda
+capacidad de negocio se expone y se consume vía APIs versionadas a
+través del API~Gateway. La Tabla~\ref{tab:apis-expuestas} lista las APIs
+\emph{expuestas} por Todo~Tarjetas (a sus canales, filiales y partners),
+y la Tabla~\ref{tab:apis-consumidas} las APIs \emph{consumidas} desde
+proveedores externos.
+
+{\small
+\renewcommand{\arraystretch}{1.2}
+\begin{xltabular}{\textwidth}{@{}>{\RaggedRight\arraybackslash}p{3.2cm}@{\hspace{6pt}}>{\RaggedRight\arraybackslash}X@{\hspace{6pt}}>{\RaggedRight\arraybackslash}p{2.6cm}@{}}
+\caption{APIs expuestas por Todo Tarjetas — productores internos.\label{tab:apis-expuestas}}\\
+\toprule
+\textbf{API} & \textbf{Consumidor / Propósito} & \textbf{Tipo} \\
+\midrule
+\endfirsthead
+\multicolumn{3}{l}{\emph{(continuación de la Tabla \ref{tab:apis-expuestas})}}\\
+\toprule
+\textbf{API} & \textbf{Consumidor / Propósito} & \textbf{Tipo} \\
+\midrule
+\endhead
+\bottomrule
+\endlastfoot
+Cards~API & App, Web, WhatsApp; consulta de cupo, bloqueo, reactivación, reposición & REST sync \\
+Cases~API & App, Web, Backoffice; ciclo de vida de PQR/reclamos, SLA, escalamiento & REST sync \\
+Onboarding~API & Web/App de originación; pasos del flujo, estado, recuperación de abandono & REST sync \\
+Scoring~API & Onboarding Orchestrator y motores internos; decisión crediticia $<60$\,s & gRPC sync \\
+Issuance~API & Onboarding y Card~Mgmt; emisión de tarjeta virtual, push-to-wallet & REST sync \\
+GenAI~Assistant~API & App, Web, WhatsApp, Backoffice; turno conversacional con contexto y RAG & REST sync \\
+Open~Banking~APIs & Bancos partners, fintechs y comercios; consulta de productos, movimientos, pagos (regulado) & REST sync (OAuth~2.0) \\
+Acquiring~API & Comercios afiliados; consulta de movimientos, conciliación diaria & REST sync \\
+Events~Stream & Filiales, holding, BI; eventos de negocio en tiempo real (Kafka topics) & Async pub/sub \\
+\end{xltabular}}
+
+{\small
+\renewcommand{\arraystretch}{1.2}
+\begin{xltabular}{\textwidth}{@{}>{\RaggedRight\arraybackslash}p{4.2cm}@{\hspace{6pt}}>{\RaggedRight\arraybackslash}X@{\hspace{6pt}}>{\RaggedRight\arraybackslash}p{2.8cm}@{}}
+\caption{APIs consumidas por Todo Tarjetas — proveedores externos.\label{tab:apis-consumidas}}\\
+\toprule
+\textbf{API externa} & \textbf{Información que se toma} & \textbf{Tipo} \\
+\midrule
+\endfirsthead
+\multicolumn{3}{l}{\emph{(continuación de la Tabla \ref{tab:apis-consumidas})}}\\
+\toprule
+\textbf{API externa} & \textbf{Información que se toma} & \textbf{Tipo} \\
+\midrule
+\endhead
+\bottomrule
+\endlastfoot
+DataCrédito / TransUnion & Score crediticio, historial; cache $90$ días & REST sync \\
+Cifin & Información financiera complementaria & REST sync \\
+Min Hacienda — AML & Lista anti-lavado de dinero & REST sync \\
+Lista Clinton (Fiscalía) & Control de operaciones & REST sync \\
+Registraduría & Validación de identidad & REST sync \\
+Truora / Onfido & Score de confianza biométrica, liveness & REST sync \\
+VISA / Mastercard / AMEX & Autorización cross-emisor, tokenización wallet & ISO~8583 / REST \\
+Core Bancario Banco Los Alpes & Notas débito sobre cuentas, abonos a comercios & REST sync \\
+OpenAI / Anthropic & Respuestas conversacionales del LLM & HTTPS sync \\
+WhatsApp Business API & Mensajes conversacionales & Webhook async \\
+Apple Pay / Google Pay & Tokenización de tarjeta virtual & REST sync \\
+DIAN (reportes fiscales) & Envío de IVAs y retefuente & Batch (SFTP / API) \\
+\end{xltabular}}
+
+\subsection{Funnel de oportunidades — del listado al CVP priorizado}
+\label{sec:funnel}
+
+La arquitectura propuesta no es resultado de un listado plano de
+oportunidades. La Figura~\ref{fig:funnel} sintetiza cómo se llegó a
+los dos CVPs priorizados (CVP~1 y CVP~2) a partir de
+$+200$ oportunidades atomizadas, consolidadas en $\sim 30$ grupos
+end-to-end y filtradas por impacto financiero, factibilidad y horizonte
+en la Ola~1. Esta vista cierra la trazabilidad con el Taller~1 y
+justifica por qué la arquitectura está optimizada precisamente para
+estos dos CVPs.
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=\textwidth]{artefactos/05-funnel-priorizacion.png}
+  \caption{Funnel de priorización: $+200$ oportunidades atomizadas
+  $\to$ $\sim 30$ grupos E2E $\to$ $2$ iniciativas Ola~1 (CVP~1 y CVP~2).}
+  \label{fig:funnel}
+\end{figure}
+
+\subsection{Principios arquitectónicos transversales}
+\label{sec:principios}
+
+Los siguientes principios aplican a toda la plataforma y deben verificarse
+en cada release de cualquiera de los dos CVPs:
+
+\begin{enumerate}[leftmargin=1.6em,topsep=2pt,itemsep=3pt]
+  \item \textbf{API-first.} Todo lo que se construye expone y consume
+        APIs versionadas y catalogadas. Prepara la plataforma para
+        Open Banking sin rediseño futuro y permite que las filiales
+        regionales se integren rápidamente.
+  \item \textbf{Event-driven.} El Event~Bus desacopla productores y
+        consumidores. Una falla en el Scoring~ML del CVP~2 no bloquea
+        al Asistente del CVP~1.
+  \item \textbf{Cloud-native + multi-tenant.} La arquitectura nace en
+        cloud (PaaS gestionado para Kafka, Flink, Spark, Redis),
+        contenedorizada y multi-tenant para soportar las filiales del
+        Banco~Los~Alpes y, en una segunda ola, otros bancos de la
+        región.
+  \item \textbf{Zero-trust.} mTLS entre microservicios. PAN tokenizado
+        antes de salir del Switch / Core~TDC. Nunca en texto plano por
+        la capa de aplicación. Cumple PCI-DSS por diseño.
+  \item \textbf{Data mesh.} Cada microservicio es dueño de sus datos
+        operacionales. El Lakehouse es la capa de integración analítica,
+        no operacional.
+  \item \textbf{Observabilidad desde el día~1.} OpenTelemetry en cada
+        microservicio. SLA del CVP~1 ($-35\%$ vol.\ call center,
+        $+25\%$ FCR) y funnel del CVP~2 ($+30\%$ conversión, alta a
+        primer uso $<10$\,min) visibles en tiempo real.
+  \item \textbf{Paperless.} Toda interacción que tradicionalmente
+        requería papel (vinculación, soportes, firma) se digitaliza
+        con biometría, ECM y firma electrónica.
+  \item \textbf{Self-service first, agente humano por excepción.} La
+        ruta ideal de ambos CVPs no requiere intervención manual.
+        El call center y el backoffice intervienen solo en casos
+        que el modelo escala explícitamente.
+\end{enumerate}
+
+\subsection{Síntesis para decisión}
+\label{sec:sintesis}
+
+Los dos CVPs se montan sobre una plataforma única, con servicios
+diferenciados por línea verde y una capa común de datos, integración y
+seguridad. La Tabla~\ref{tab:sintesis} resume cómo cada CVP utiliza
+las capas KEEP/MODIFY/NEW de la arquitectura.
+
+{\small
+\renewcommand{\arraystretch}{1.25}
+\begin{xltabular}{\textwidth}{@{}>{\RaggedRight\arraybackslash}p{2.7cm}@{\hspace{6pt}}>{\RaggedRight\arraybackslash}X@{\hspace{6pt}}>{\RaggedRight\arraybackslash}X@{}}
+\caption{Síntesis — uso de capas KEEP/MODIFY/NEW por CVP.\label{tab:sintesis}}\\
+\toprule
+\textbf{Capa} & \textbf{CVP~1 — Asistente GenAI} & \textbf{CVP~2 — Originación Digital} \\
+\midrule
+\endfirsthead
+\multicolumn{3}{l}{\emph{(continuación de la Tabla \ref{tab:sintesis})}}\\
+\toprule
+\textbf{Capa} & \textbf{CVP~1 — Asistente GenAI} & \textbf{CVP~2 — Originación Digital} \\
+\midrule
+\endhead
+\bottomrule
+\endlastfoot
+Canales (NEW) & App, Web, WhatsApp, Backoffice asistido & App de originación, Web, Wallet digital \\
+Microservicios (NEW) & GenAI Orchestrator, Case~Mgmt, Knowledge~Base, Escalation Engine & Onboarding Orchestrator, Identity Verification, Scoring~ML, Card Issuance, Wallet~Integration, Abandonment~Recovery \\
+Motores (NEW) & Knowledge Base + RAG, Vector~DB & OCR/Liveness, Scoring~ML ($<60$\,s) \\
+BSS (KEEP/MOD) & CRM (MOD) para historial PQR, ECM (KEEP) para evidencias & Catálogo Productos (MOD), CRM (MOD) para alta de cliente \\
+OSS (KEEP) & Switch, GL, Conciliación (sin cambio) & Switch (consumido para autorización), GL (sin cambio) \\
+Datos (NEW) & Redis (estado de caso), Vector~DB (RAG), Lakehouse (auditoría) & Feature~Store, Lakehouse (reentrenamiento), Redis (cache decisiones) \\
+Externos & GenAI APIs, WhatsApp Business & DataCrédito, Cifin, Clinton, AML, Registraduría, Truora, VISA/MC/AMEX, Apple/Google Pay \\
+KPI principal & $-35\%$ volumen call center, $+25\%$ FCR, $-50\%$ TMR & $+30\%$ conversión digital, alta a primer uso $<10$\,min \\
+\end{xltabular}}
+
+\noindent\textbf{Conclusión arquitectónica.} La plataforma cumple
+simultáneamente los requerimientos del CVP~1 (servicio omnicanal con
+GenAI) y del CVP~2 (originación digital instantánea), reutiliza el
+$60$--$70\%$ del activo actual de Todo~Tarjetas (capa OSS, Core~TDC,
+Switch, ESB-OSB, ECM, Core Bancario del Banco~Los~Alpes), y agrega los
+componentes nuevos estrictamente necesarios (microservicios de los CVPs,
+motores ML/GenAI, capa Fast-Data y multi-tenant). Esta es la condición
+arquitectónica que viabiliza el VPN proyectado de USD~$12{,}2$\,M a
+$5$~años bajo el modelo de Nueva Línea de Negocio Digital justificado
+en el Bloque~1.
+
+\end{document}

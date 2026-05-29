@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Paperclip, ChevronDown } from "lucide-react";
+import { Paperclip } from "lucide-react";
 import { Screen, ScreenHeader } from "@/components/Screen";
 
 export default function ReportarDetalles() {
@@ -28,19 +28,12 @@ export default function ReportarDetalles() {
           </ul>
         </div>
 
-        <Field label="Localización del problema">
+        <Field label="Describe el problema">
           <textarea
             className="w-full bg-transparent outline-none text-[13px] resize-none"
             rows={3}
-            placeholder="Cuéntanos qué pasó. ¿Reconoces el comercio?"
+            placeholder="Explica brevemente por qué no reconoces estos cargos..."
           />
-        </Field>
-
-        <Field label="Acciones tomadas">
-          <button className="w-full flex items-center justify-between text-[13px] text-[var(--text-muted)]">
-            <span>6–10 días hábiles</span>
-            <ChevronDown size={14} />
-          </button>
         </Field>
 
         <button className="card w-full p-3 flex items-center gap-2.5 mb-5 hover:bg-[var(--surface-2)] transition">
@@ -53,8 +46,8 @@ export default function ReportarDetalles() {
           </div>
         </button>
 
-        <Link href="/servicio/reportar/confirmacion" className="btn-primary">
-          Enviar reporte
+        <Link href="/servicio/reportar/revisar" className="btn-primary">
+          Revisar y confirmar
         </Link>
       </div>
     </Screen>

@@ -5,9 +5,22 @@ import { Screen, ScreenHeader } from "@/components/Screen";
 export default function Registro() {
   return (
     <Screen>
-      <ScreenHeader title="Atrás" back="/originacion" step="PASO 1 DE 7" />
+      <ScreenHeader title="Atrás" back="/originacion" step="PASO 2 DE 7" />
 
-      <div className="px-5 pt-2 pb-4">
+      {/* Barra segmentada */}
+      <div className="px-5 mb-4">
+        <div className="flex gap-1">
+          {Array.from({ length: 7 }).map((_, i) => (
+            <div
+              key={i}
+              className="flex-1 h-1 rounded-full"
+              style={{ background: i < 2 ? "var(--primary)" : "var(--border-strong)" }}
+            />
+          ))}
+        </div>
+      </div>
+
+      <div className="px-5 pt-0 pb-4">
         <h2 className="text-2xl font-bold mb-1.5 tracking-tight">
           Registro y Consentimiento
         </h2>
@@ -33,7 +46,7 @@ export default function Registro() {
         </div>
 
         <Link href="/originacion/validacion" className="btn-primary">
-          Verificar identidad →
+          Continuar →
         </Link>
       </div>
     </Screen>

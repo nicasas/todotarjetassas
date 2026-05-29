@@ -7,7 +7,7 @@ import { Screen } from "@/components/Screen";
 
 export default function Cierre() {
   const [rating, setRating] = useState(4);
-  const [score, setScore] = useState<number | null>(8);
+  const [score, setScore] = useState<number | null>(8); // escala 0–10
 
   return (
     <Screen>
@@ -70,11 +70,11 @@ export default function Cierre() {
             ¿Recomendarías este servicio?
           </p>
           <p className="text-[11px] text-[var(--text-muted)] text-center mb-3">
-            Del 1 al 10
+            Del 0 al 10
           </p>
-          <div className="grid grid-cols-10 gap-1">
-            {Array.from({ length: 10 }).map((_, i) => {
-              const n = i + 1;
+          <div className="grid grid-cols-11 gap-1">
+            {Array.from({ length: 11 }).map((_, i) => {
+              const n = i;
               const active = score === n;
               return (
                 <button

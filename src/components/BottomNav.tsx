@@ -1,14 +1,28 @@
 import Link from "next/link";
-import { Home, CreditCard, BarChart3, MessageCircle } from "lucide-react";
+import { Home, MessageCircle, Folder, User, CreditCard, Activity } from "lucide-react";
 
-const items = [
-  { href: "/servicio", label: "Inicio", icon: Home },
-  { href: "/originacion/centro", label: "Tarjeta", icon: CreditCard },
-  { href: "#", label: "Movs", icon: BarChart3 },
-  { href: "/servicio/chat", label: "Soporte", icon: MessageCircle },
+const servicio = [
+  { href: "/servicio", label: "Home", icon: Home },
+  { href: "/servicio/chat", label: "Chat", icon: MessageCircle },
+  { href: "#", label: "Casos", icon: Folder },
+  { href: "#", label: "Perfil", icon: User },
 ];
 
-export function BottomNav({ active }: { active?: string }) {
+const originacion = [
+  { href: "/originacion/centro", label: "Inicio", icon: Home },
+  { href: "#", label: "Tarjeta", icon: CreditCard },
+  { href: "#", label: "Actividad", icon: Activity },
+  { href: "#", label: "Perfil", icon: User },
+];
+
+export function BottomNav({
+  active,
+  variant = "servicio",
+}: {
+  active?: string;
+  variant?: "servicio" | "originacion";
+}) {
+  const items = variant === "originacion" ? originacion : servicio;
   return (
     <div className="border-t border-[var(--border)] bg-[var(--surface)] px-4 pt-2 pb-6">
       <div className="flex justify-around items-center">

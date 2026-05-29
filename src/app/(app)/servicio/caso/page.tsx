@@ -65,6 +65,22 @@ export default function DetalleCaso() {
           </p>
         </div>
 
+        <div className="card p-4 mb-4">
+          <p className="text-[10px] tracking-widest uppercase text-[var(--text-dim)] font-bold mb-2">
+            Información del canal
+          </p>
+          <div className="space-y-2 text-[12px]">
+            <div className="flex justify-between">
+              <span className="text-[var(--text-muted)]">Canal de origen</span>
+              <span>Chat IA</span>
+            </div>
+            <div className="flex justify-between">
+              <span className="text-[var(--text-muted)]">Responsable actual</span>
+              <span>Ana García</span>
+            </div>
+          </div>
+        </div>
+
         <Link href="/servicio/escalamiento" className="btn-outline">
           Contactar agente
         </Link>

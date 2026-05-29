@@ -1,0 +1,370 @@
+\documentclass[12pt]{article}
+
+% ── CODIFICACIÓN Y FUENTES ───────────────────────────────────
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{microtype}
+
+% ── IDIOMA ───────────────────────────────────────────────────
+\usepackage[spanish,es-tabla,es-noshorthands,es-nosectiondot,es-noquoting]{babel}
+
+% ── MÁRGENES ─────────────────────────────────────────────────
+\usepackage[margin=2.5cm]{geometry}
+
+% ── TABLAS ───────────────────────────────────────────────────
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{tabularx}
+\usepackage{longtable}
+\usepackage{xltabular}
+\usepackage{colortbl}
+\usepackage{ragged2e}
+
+% ── GRÁFICOS Y FIGURAS ───────────────────────────────────────
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{caption}
+\usepackage{tikz}
+
+% ── COLORES ──────────────────────────────────────────────────
+\usepackage{xcolor}
+
+% ── MATEMÁTICAS Y SÍMBOLOS ───────────────────────────────────
+\usepackage{amssymb}
+\usepackage{wasysym}
+\usepackage{pifont}
+
+% ── LAYOUT Y ESTILO ──────────────────────────────────────────
+\usepackage{titlesec}
+\usepackage{parskip}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage{mdframed}
+
+% ── HIPERVÍNCULOS ────────────────────────────────────────────
+\usepackage[hidelinks]{hyperref}
+
+% ── Silenciar preámbulos de subarchivos ─────────────────────
+\usepackage{docmute}
+
+% =============================================================
+% ── COLORES CORPORATIVOS ─────────────────────────────────────
+% =============================================================
+\definecolor{headerblue}{RGB}{31,73,125}
+\definecolor{rowlightblue}{RGB}{217,235,255}
+\definecolor{headerorange}{RGB}{197,90,17}
+\definecolor{rowlightorange}{RGB}{252,228,214}
+\definecolor{darkgray}{RGB}{64,64,64}
+\definecolor{lightgray}{RGB}{245,245,245}
+\definecolor{accentblue}{RGB}{24,95,165}
+\definecolor{accentcoral}{RGB}{216,90,48}
+\definecolor{tableheader}{RGB}{40,40,40}
+\definecolor{okgreen}{RGB}{34,139,34}
+\definecolor{warnorange}{RGB}{200,100,0}
+\definecolor{phoneframe}{RGB}{40,40,40}
+\definecolor{phonescreen}{RGB}{230,235,245}
+
+% =============================================================
+% ── COMANDOS UTILITARIOS ─────────────────────────────────────
+% =============================================================
+\providecommand{\csi}{\ding{51}}
+\providecommand{\cno}{\textcolor{gray}{--}}
+
+% ── Símbolos heurística ──────────────────────────────────────
+\providecommand{\hbien}{\textcolor{okgreen}{\CIRCLE}}
+\providecommand{\hmed}{\textcolor{warnorange}{\LEFTcircle}}
+\providecommand{\hmal}{\textcolor{accentcoral}{\Circle}}
+
+% ── Columnas personalizadas ──────────────────────────────────
+\newcolumntype{L}[1]{>{\raggedright\arraybackslash}p{#1}}
+\newcolumntype{C}[1]{>{\centering\arraybackslash}p{#1}}
+
+% =============================================================
+% ── MARCOS DE CELULAR ────────────────────────────────────────
+% =============================================================
+
+% Marco con imagen real
+\newcommand{\phoneboximg}[2]{%
+\begin{center}
+\begin{tikzpicture}[scale=1.0]
+  \draw[line width=1.5pt, color=phoneframe, fill=white,
+        rounded corners=18pt]
+    (0,0) rectangle (4.4,9.0);
+  \draw[line width=0.4pt, color=gray!30, fill=white,
+        rounded corners=14pt]
+    (0.18,0.45) rectangle (4.22,8.55);
+  \draw[line width=0pt, color=phoneframe, fill=phoneframe,
+        rounded corners=5pt]
+    (1.55,8.10) rectangle (2.85,8.38);
+  \filldraw[color=gray!60] (2.62,8.24) circle (0.09);
+  \draw[line width=1.2pt, color=phoneframe]
+    (4.4,6.2)--(4.65,6.2)--(4.65,7.1)--(4.4,7.1);
+  \draw[line width=1.2pt, color=phoneframe]
+    (0,7.8)--(-0.25,7.8)--(-0.25,8.2)--(0,8.2);
+  \draw[line width=1.2pt, color=phoneframe]
+    (0,6.8)--(-0.25,6.8)--(-0.25,7.4)--(0,7.4);
+  \draw[line width=1.2pt, color=phoneframe]
+    (0,5.9)--(-0.25,5.9)--(-0.25,6.5)--(0,6.5);
+  \node at (2.2,4.3) {%
+    \includegraphics[width=4.04cm,height=8.1cm,keepaspectratio=false]{#1}%
+  };
+  \clip (0.18,0.45) rectangle (4.22,8.55);
+  \draw[line width=2.5pt, color=gray!60, line cap=round]
+    (1.6,0.20)--(2.8,0.20);
+\end{tikzpicture}
+\end{center}%
+\par\smallskip
+\centering{\small\textbf{#2}}%
+}
+
+% Marco Antes/Despues con imágenes reales
+\newcommand{\phoneboxbaimg}[4]{%
+\begin{center}
+\begin{minipage}[t]{0.45\linewidth}
+  \centering
+  {\small\textbf{\textcolor{accentcoral}{#3}}}\\[4pt]
+  \begin{tikzpicture}[scale=0.82]
+    \draw[line width=1.5pt,color=phoneframe,fill=white,rounded corners=18pt]
+      (0,0) rectangle (4.4,9.0);
+    \draw[line width=0.4pt,color=gray!30,fill=white,rounded corners=14pt]
+      (0.18,0.45) rectangle (4.22,8.55);
+    \draw[line width=0pt,color=phoneframe,fill=phoneframe,rounded corners=5pt]
+      (1.55,8.10) rectangle (2.85,8.38);
+    \filldraw[color=gray!60] (2.62,8.24) circle (0.09);
+    \draw[line width=1.2pt,color=phoneframe]
+      (4.4,6.2)--(4.65,6.2)--(4.65,7.1)--(4.4,7.1);
+    \draw[line width=1.2pt,color=phoneframe]
+      (0,7.8)--(-0.25,7.8)--(-0.25,8.2)--(0,8.2);
+    \draw[line width=1.2pt,color=phoneframe]
+      (0,6.8)--(-0.25,6.8)--(-0.25,7.4)--(0,7.4);
+    \draw[line width=1.2pt,color=phoneframe]
+      (0,5.9)--(-0.25,5.9)--(-0.25,6.5)--(0,6.5);
+    \node at (2.2,4.3) {%
+      \includegraphics[width=4.04cm,height=8.1cm,keepaspectratio=false]{#1}%
+    };
+    \clip (0.18,0.45) rectangle (4.22,8.55);
+    \draw[line width=2.5pt,color=gray!60,line cap=round]
+      (1.6,0.20)--(2.8,0.20);
+  \end{tikzpicture}
+\end{minipage}
+\hfill
+\begin{minipage}[t]{0.45\linewidth}
+  \centering
+  {\small\textbf{\textcolor{okgreen}{#4}}}\\[4pt]
+  \begin{tikzpicture}[scale=0.82]
+    \draw[line width=1.5pt,color=phoneframe,fill=white,rounded corners=18pt]
+      (0,0) rectangle (4.4,9.0);
+    \draw[line width=0.4pt,color=gray!30,fill=white,rounded corners=14pt]
+      (0.18,0.45) rectangle (4.22,8.55);
+    \draw[line width=0pt,color=phoneframe,fill=phoneframe,rounded corners=5pt]
+      (1.55,8.10) rectangle (2.85,8.38);
+    \filldraw[color=gray!60] (2.62,8.24) circle (0.09);
+    \draw[line width=1.2pt,color=phoneframe]
+      (4.4,6.2)--(4.65,6.2)--(4.65,7.1)--(4.4,7.1);
+    \draw[line width=1.2pt,color=phoneframe]
+      (0,7.8)--(-0.25,7.8)--(-0.25,8.2)--(0,8.2);
+    \draw[line width=1.2pt,color=phoneframe]
+      (0,6.8)--(-0.25,6.8)--(-0.25,7.4)--(0,7.4);
+    \draw[line width=1.2pt,color=phoneframe]
+      (0,5.9)--(-0.25,5.9)--(-0.25,6.5)--(0,6.5);
+    \node at (2.2,4.3) {%
+      \includegraphics[width=4.04cm,height=8.1cm,keepaspectratio=false]{#2}%
+    };
+    \clip (0.18,0.45) rectangle (4.22,8.55);
+    \draw[line width=2.5pt,color=gray!60,line cap=round]
+      (1.6,0.20)--(2.8,0.20);
+  \end{tikzpicture}
+\end{minipage}
+\end{center}%
+}
+
+% Marco placeholder
+\newcommand{\phonebox}[1]{%
+\begin{center}
+\begin{tikzpicture}[scale=1.0]
+  \draw[line width=1.5pt, color=phoneframe, fill=white,
+        rounded corners=18pt]
+    (0,0) rectangle (4.4,9.0);
+  \draw[line width=0.4pt, color=gray!30, fill=white,
+        rounded corners=14pt]
+    (0.18,0.45) rectangle (4.22,8.55);
+  \draw[line width=1pt, color=accentblue, fill=phonescreen,
+        rounded corners=4pt, dashed]
+    (0.28,0.60) rectangle (4.12,8.00);
+  \draw[line width=0pt, color=phoneframe, fill=phoneframe,
+        rounded corners=5pt]
+    (1.55,8.10) rectangle (2.85,8.38);
+  \filldraw[color=gray!60] (2.62,8.24) circle (0.09);
+  \draw[line width=1.2pt, color=phoneframe]
+    (4.4,6.2)--(4.65,6.2)--(4.65,7.1)--(4.4,7.1);
+  \draw[line width=1.2pt, color=phoneframe]
+    (0,7.8)--(-0.25,7.8)--(-0.25,8.2)--(0,8.2);
+  \draw[line width=1.2pt, color=phoneframe]
+    (0,6.8)--(-0.25,6.8)--(-0.25,7.4)--(0,7.4);
+  \draw[line width=1.2pt, color=phoneframe]
+    (0,5.9)--(-0.25,5.9)--(-0.25,6.5)--(0,6.5);
+  \draw[color=gray!60, line width=0.9pt]
+    (1.4,4.5) -- (2.2,3.5) -- (3.0,4.5) -- cycle;
+  \filldraw[color=gray!50] (2.65,4.2) circle (0.20);
+  \node[align=center, text width=3.5cm, color=darkgray]
+    at (2.2,5.0) {\small\textit{Insertar captura}};
+  \node[align=center, text width=3.5cm, color=accentblue]
+    at (2.2,4.35) {\small\textbf{#1}};
+  \draw[line width=2.5pt, color=gray!60, line cap=round]
+    (1.6,0.20)--(2.8,0.20);
+\end{tikzpicture}
+\end{center}%
+}
+
+% Marco Antes/Despues placeholder
+\newcommand{\phoneboxba}[4]{%
+\begin{center}
+\begin{minipage}[t]{0.45\linewidth}
+  \centering
+  {\small\textbf{\textcolor{accentcoral}{#1}}}\\[4pt]
+  \begin{tikzpicture}[scale=0.82]
+    \draw[line width=1.5pt,color=phoneframe,fill=white,rounded corners=18pt]
+      (0,0) rectangle (4.4,9.0);
+    \draw[line width=0.4pt,color=gray!30,fill=white,rounded corners=14pt]
+      (0.18,0.45) rectangle (4.22,8.55);
+    \draw[line width=1pt,color=accentcoral,fill=phonescreen,rounded corners=4pt,dashed]
+      (0.28,0.60) rectangle (4.12,8.00);
+    \draw[line width=0pt,color=phoneframe,fill=phoneframe,rounded corners=5pt]
+      (1.55,8.10) rectangle (2.85,8.38);
+    \filldraw[color=gray!60] (2.62,8.24) circle (0.09);
+    \draw[line width=1.2pt,color=phoneframe]
+      (4.4,6.2)--(4.65,6.2)--(4.65,7.1)--(4.4,7.1);
+    \draw[line width=1.2pt,color=phoneframe]
+      (0,7.8)--(-0.25,7.8)--(-0.25,8.2)--(0,8.2);
+    \draw[line width=1.2pt,color=phoneframe]
+      (0,6.8)--(-0.25,6.8)--(-0.25,7.4)--(0,7.4);
+    \draw[line width=1.2pt,color=phoneframe]
+      (0,5.9)--(-0.25,5.9)--(-0.25,6.5)--(0,6.5);
+    \draw[color=gray!60,line width=0.9pt]
+      (1.4,4.5)--(2.2,3.5)--(3.0,4.5)--cycle;
+    \filldraw[color=gray!50] (2.65,4.2) circle (0.20);
+    \node[align=center,text width=3.5cm,color=darkgray]
+      at (2.2,5.0) {\small\textit{Insertar captura}};
+    \node[align=center,text width=3.5cm,color=accentcoral]
+      at (2.2,4.35) {\small\textbf{#3}};
+    \draw[line width=2.5pt,color=gray!60,line cap=round]
+      (1.6,0.20)--(2.8,0.20);
+  \end{tikzpicture}
+\end{minipage}
+\hfill
+\begin{minipage}[t]{0.45\linewidth}
+  \centering
+  {\small\textbf{\textcolor{okgreen}{#2}}}\\[4pt]
+  \begin{tikzpicture}[scale=0.82]
+    \draw[line width=1.5pt,color=phoneframe,fill=white,rounded corners=18pt]
+      (0,0) rectangle (4.4,9.0);
+    \draw[line width=0.4pt,color=gray!30,fill=white,rounded corners=14pt]
+      (0.18,0.45) rectangle (4.22,8.55);
+    \draw[line width=1pt,color=okgreen,fill=phonescreen,rounded corners=4pt,dashed]
+      (0.28,0.60) rectangle (4.12,8.00);
+    \draw[line width=0pt,color=phoneframe,fill=phoneframe,rounded corners=5pt]
+      (1.55,8.10) rectangle (2.85,8.38);
+    \filldraw[color=gray!60] (2.62,8.24) circle (0.09);
+    \draw[line width=1.2pt,color=phoneframe]
+      (4.4,6.2)--(4.65,6.2)--(4.65,7.1)--(4.4,7.1);
+    \draw[line width=1.2pt,color=phoneframe]
+      (0,7.8)--(-0.25,7.8)--(-0.25,8.2)--(0,8.2);
+    \draw[line width=1.2pt,color=phoneframe]
+      (0,6.8)--(-0.25,6.8)--(-0.25,7.4)--(0,7.4);
+    \draw[line width=1.2pt,color=phoneframe]
+      (0,5.9)--(-0.25,5.9)--(-0.25,6.5)--(0,6.5);
+    \draw[color=gray!60,line width=0.9pt]
+      (1.4,4.5)--(2.2,3.5)--(3.0,4.5)--cycle;
+    \filldraw[color=gray!50] (2.65,4.2) circle (0.20);
+    \node[align=center,text width=3.5cm,color=darkgray]
+      at (2.2,5.0) {\small\textit{Insertar captura}};
+    \node[align=center,text width=3.5cm,color=okgreen]
+      at (2.2,4.35) {\small\textbf{#4}};
+    \draw[line width=2.5pt,color=gray!60,line cap=round]
+      (1.6,0.20)--(2.8,0.20);
+  \end{tikzpicture}
+\end{minipage}
+\end{center}%
+}
+
+% =============================================================
+% ── FORMATO DE TÍTULOS ───────────────────────────────────────
+% =============================================================
+\captionsetup{font=small,labelfont=bf}
+\titleformat{\section}
+  {\large\bfseries\color{darkgray}}{\thesection.}{0.5em}{}[\titlerule]
+\titleformat{\subsection}
+  {\normalsize\bfseries\color{accentblue}}{\thesubsection}{0.5em}{}
+\titleformat{\subsubsection}
+  {\normalsize\bfseries\color{darkgray}}{\thesubsubsection}{0.5em}{}
+
+% =============================================================
+% ── ENCABEZADO Y PIE ─────────────────────────────────────────
+% =============================================================
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small\textcolor{darkgray}{Architecting Digital Enterprises}}
+\fancyhead[R]{\small\textcolor{darkgray}{Todo Tarjetas S.A. --- Taller 2}}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0.4pt}
+
+% =============================================================
+% ── ENTORNOS ESPECIALES ──────────────────────────────────────
+% =============================================================
+\newmdenv[backgroundcolor=lightgray,linecolor=accentblue,linewidth=2pt,
+  leftline=true,rightline=false,topline=false,bottomline=false,
+  innerleftmargin=10pt,innerrightmargin=10pt,
+  innertopmargin=6pt,innerbottommargin=6pt]{insight}
+
+\newmdenv[backgroundcolor=lightgray,linecolor=accentcoral,linewidth=2pt,
+  leftline=true,rightline=false,topline=false,bottomline=false,
+  innerleftmargin=10pt,innerrightmargin=10pt,
+  innertopmargin=6pt,innerbottommargin=6pt]{riesgo}
+
+% =============================================================
+\begin{document}
+% =============================================================
+
+% ── PORTADA ──────────────────────────────────────────────────
+\begin{titlepage}
+    \centering
+    \vspace*{2cm}
+
+    {\large Universidad de los Andes \par}
+    \vspace{0.3cm}
+    {\large Ingeniería de Sistemas y Computación \par}
+    \vspace{0.3cm}
+    {\large Architecting Digital Enterprises \par}
+
+    \vspace{2.5cm}
+
+    {\LARGE \textbf{Caso de Estudio: Todo Tarjetas S.A.} \par}
+    \vspace{0.8cm}
+    {\Large Taller 2 --- Cultura, Validación UX y Arquitectura de Solución \par}
+
+    \vspace{3cm}
+
+    {\large
+        Esteban Castelblanco \\[0.3cm]
+        Julián Baquero \\[0.3cm]
+        Nicolás Casas \par
+    }
+
+    \vfill
+
+    {\large Bogotá, Colombia \par}
+    \vspace{0.3cm}
+    {\large 2026 \par}
+
+    \vspace{2cm}
+\end{titlepage}
+
+% ── CONTENIDO ────────────────────────────────────────────────
+\input{punto1}
+\newpage
+\input{punto2}
+\newpage
+\input{punto3}
+
+\end{document}

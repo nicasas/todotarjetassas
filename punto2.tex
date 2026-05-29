@@ -1,0 +1,1226 @@
+\documentclass[12pt,a4paper]{article}
+
+% ── Paquetes ─────────────────────────────────────────────────────────────────
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[spanish,es-noshorthands,es-nosectiondot,es-noquoting]{babel}
+\usepackage{geometry}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{tabularx}
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage{titlesec}
+\usepackage{fancyhdr}
+\usepackage{hyperref}
+\usepackage{enumitem}
+\usepackage{parskip}
+\usepackage{lmodern}
+\usepackage{microtype}
+\usepackage{float}
+\usepackage{mdframed}
+\usepackage{colortbl}
+\usepackage{wasysym}
+\usepackage{amssymb}
+\usepackage{longtable}
+\usepackage{pifont}
+\usepackage{tikz}
+
+% ── Comandos utilitarios ─────────────────────────────────────────────────────
+\newcommand{\csi}{\ding{51}}
+\newcommand{\cno}{\textcolor{gray}{--}}
+
+% ── Geometria ────────────────────────────────────────────────────────────────
+\geometry{top=2.5cm, bottom=2.5cm, left=2.5cm, right=2.5cm}
+
+% ── Colores ──────────────────────────────────────────────────────────────────
+\definecolor{darkgray}{RGB}{60,60,60}
+\definecolor{lightgray}{RGB}{245,245,245}
+\definecolor{accentblue}{RGB}{24,95,165}
+\definecolor{accentcoral}{RGB}{216,90,48}
+\definecolor{tableheader}{RGB}{40,40,40}
+\definecolor{okgreen}{RGB}{34,139,34}
+\definecolor{warnorange}{RGB}{200,100,0}
+\definecolor{phoneframe}{RGB}{40,40,40}
+\definecolor{phonescreen}{RGB}{230,235,245}
+
+% ── Marco de celular CON imagen real (iPhone) ────────────────────────────────
+\newcommand{\phoneboximg}[2]{%
+\begin{center}
+\begin{tikzpicture}[scale=1.0]
+  % Cuerpo del iPhone
+  \draw[line width=1.5pt, color=phoneframe, fill=white,
+        rounded corners=18pt]
+    (0,0) rectangle (4.4,9.0);
+  % Borde interior de pantalla
+  \draw[line width=0.4pt, color=gray!30, fill=white,
+        rounded corners=14pt]
+    (0.18,0.45) rectangle (4.22,8.55);
+  % Dynamic Island
+  \draw[line width=0pt, color=phoneframe, fill=phoneframe,
+        rounded corners=5pt]
+    (1.55,8.10) rectangle (2.85,8.38);
+  % Camara frontal
+  \filldraw[color=gray!60] (2.62,8.24) circle (0.09);
+  % Boton encendido (derecha)
+  \draw[line width=1.2pt, color=phoneframe]
+    (4.4,6.2)--(4.65,6.2)--(4.65,7.1)--(4.4,7.1);
+  % Boton silencio (izquierda arriba)
+  \draw[line width=1.2pt, color=phoneframe]
+    (0,7.8)--(-0.25,7.8)--(-0.25,8.2)--(0,8.2);
+  % Botones volumen (izquierda)
+  \draw[line width=1.2pt, color=phoneframe]
+    (0,6.8)--(-0.25,6.8)--(-0.25,7.4)--(0,7.4);
+  \draw[line width=1.2pt, color=phoneframe]
+    (0,5.9)--(-0.25,5.9)--(-0.25,6.5)--(0,6.5);
+  % Imagen en la pantalla
+  \node at (2.2,4.3) {%
+    \includegraphics[width=4.04cm,height=8.1cm,keepaspectratio=false]{#1}%
+  };
+  % Clip para que la imagen no salga de la pantalla
+  \clip (0.18,0.45) rectangle (4.22,8.55);
+  % Pill home
+  \draw[line width=2.5pt, color=gray!60, line cap=round]
+    (1.6,0.20)--(2.8,0.20);
+\end{tikzpicture}
+\end{center}%
+\par\smallskip
+\centering{\small\textbf{#2}}%
+}
+
+% ── Marco de celular Antes/Despues CON imagenes reales (iPhone) ──────────────
+\newcommand{\phoneboxbaimg}[4]{%
+\begin{center}
+\begin{minipage}[t]{0.45\linewidth}
+  \centering
+  {\small\textbf{\textcolor{accentcoral}{#3}}}\\[4pt]
+  \begin{tikzpicture}[scale=0.82]
+    \draw[line width=1.5pt,color=phoneframe,fill=white,rounded corners=18pt]
+      (0,0) rectangle (4.4,9.0);
+    \draw[line width=0.4pt,color=gray!30,fill=white,rounded corners=14pt]
+      (0.18,0.45) rectangle (4.22,8.55);
+    \draw[line width=0pt,color=phoneframe,fill=phoneframe,rounded corners=5pt]
+      (1.55,8.10) rectangle (2.85,8.38);
+    \filldraw[color=gray!60] (2.62,8.24) circle (0.09);
+    \draw[line width=1.2pt,color=phoneframe]
+      (4.4,6.2)--(4.65,6.2)--(4.65,7.1)--(4.4,7.1);
+    \draw[line width=1.2pt,color=phoneframe]
+      (0,7.8)--(-0.25,7.8)--(-0.25,8.2)--(0,8.2);
+    \draw[line width=1.2pt,color=phoneframe]
+      (0,6.8)--(-0.25,6.8)--(-0.25,7.4)--(0,7.4);
+    \draw[line width=1.2pt,color=phoneframe]
+      (0,5.9)--(-0.25,5.9)--(-0.25,6.5)--(0,6.5);
+    \node at (2.2,4.3) {%
+      \includegraphics[width=4.04cm,height=8.1cm,keepaspectratio=false]{#1}%
+    };
+    \clip (0.18,0.45) rectangle (4.22,8.55);
+    \draw[line width=2.5pt,color=gray!60,line cap=round]
+      (1.6,0.20)--(2.8,0.20);
+  \end{tikzpicture}
+\end{minipage}
+\hfill
+\begin{minipage}[t]{0.45\linewidth}
+  \centering
+  {\small\textbf{\textcolor{okgreen}{#4}}}\\[4pt]
+  \begin{tikzpicture}[scale=0.82]
+    \draw[line width=1.5pt,color=phoneframe,fill=white,rounded corners=18pt]
+      (0,0) rectangle (4.4,9.0);
+    \draw[line width=0.4pt,color=gray!30,fill=white,rounded corners=14pt]
+      (0.18,0.45) rectangle (4.22,8.55);
+    \draw[line width=0pt,color=phoneframe,fill=phoneframe,rounded corners=5pt]
+      (1.55,8.10) rectangle (2.85,8.38);
+    \filldraw[color=gray!60] (2.62,8.24) circle (0.09);
+    \draw[line width=1.2pt,color=phoneframe]
+      (4.4,6.2)--(4.65,6.2)--(4.65,7.1)--(4.4,7.1);
+    \draw[line width=1.2pt,color=phoneframe]
+      (0,7.8)--(-0.25,7.8)--(-0.25,8.2)--(0,8.2);
+    \draw[line width=1.2pt,color=phoneframe]
+      (0,6.8)--(-0.25,6.8)--(-0.25,7.4)--(0,7.4);
+    \draw[line width=1.2pt,color=phoneframe]
+      (0,5.9)--(-0.25,5.9)--(-0.25,6.5)--(0,6.5);
+    \node at (2.2,4.3) {%
+      \includegraphics[width=4.04cm,height=8.1cm,keepaspectratio=false]{#2}%
+    };
+    \clip (0.18,0.45) rectangle (4.22,8.55);
+    \draw[line width=2.5pt,color=gray!60,line cap=round]
+      (1.6,0.20)--(2.8,0.20);
+  \end{tikzpicture}
+\end{minipage}
+\end{center}%
+}
+
+% ── Marco de celular placeholder (iPhone) ────────────────────────────────────
+\newcommand{\phonebox}[1]{%
+\begin{center}
+\begin{tikzpicture}[scale=1.0]
+  \draw[line width=1.5pt, color=phoneframe, fill=white,
+        rounded corners=18pt]
+    (0,0) rectangle (4.4,9.0);
+  \draw[line width=0.4pt, color=gray!30, fill=white,
+        rounded corners=14pt]
+    (0.18,0.45) rectangle (4.22,8.55);
+  \draw[line width=1pt, color=accentblue, fill=phonescreen,
+        rounded corners=4pt, dashed]
+    (0.28,0.60) rectangle (4.12,8.00);
+  \draw[line width=0pt, color=phoneframe, fill=phoneframe,
+        rounded corners=5pt]
+    (1.55,8.10) rectangle (2.85,8.38);
+  \filldraw[color=gray!60] (2.62,8.24) circle (0.09);
+  \draw[line width=1.2pt, color=phoneframe]
+    (4.4,6.2)--(4.65,6.2)--(4.65,7.1)--(4.4,7.1);
+  \draw[line width=1.2pt, color=phoneframe]
+    (0,7.8)--(-0.25,7.8)--(-0.25,8.2)--(0,8.2);
+  \draw[line width=1.2pt, color=phoneframe]
+    (0,6.8)--(-0.25,6.8)--(-0.25,7.4)--(0,7.4);
+  \draw[line width=1.2pt, color=phoneframe]
+    (0,5.9)--(-0.25,5.9)--(-0.25,6.5)--(0,6.5);
+  \draw[color=gray!60, line width=0.9pt]
+    (1.4,4.5) -- (2.2,3.5) -- (3.0,4.5) -- cycle;
+  \filldraw[color=gray!50] (2.65,4.2) circle (0.20);
+  \node[align=center, text width=3.5cm, color=darkgray]
+    at (2.2,5.0) {\small\textit{Insertar captura}};
+  \node[align=center, text width=3.5cm, color=accentblue]
+    at (2.2,4.35) {\small\textbf{#1}};
+  \draw[line width=2.5pt, color=gray!60, line cap=round]
+    (1.6,0.20)--(2.8,0.20);
+\end{tikzpicture}
+\end{center}%
+}
+
+% ── Antes / Despues placeholder lado a lado (iPhone) ─────────────────────────
+\newcommand{\phoneboxba}[4]{%
+\begin{center}
+\begin{minipage}[t]{0.45\linewidth}
+  \centering
+  {\small\textbf{\textcolor{accentcoral}{#1}}}\\[4pt]
+  \begin{tikzpicture}[scale=0.82]
+    \draw[line width=1.5pt,color=phoneframe,fill=white,rounded corners=18pt]
+      (0,0) rectangle (4.4,9.0);
+    \draw[line width=0.4pt,color=gray!30,fill=white,rounded corners=14pt]
+      (0.18,0.45) rectangle (4.22,8.55);
+    \draw[line width=1pt,color=accentcoral,fill=phonescreen,rounded corners=4pt,dashed]
+      (0.28,0.60) rectangle (4.12,8.00);
+    \draw[line width=0pt,color=phoneframe,fill=phoneframe,rounded corners=5pt]
+      (1.55,8.10) rectangle (2.85,8.38);
+    \filldraw[color=gray!60] (2.62,8.24) circle (0.09);
+    \draw[line width=1.2pt,color=phoneframe]
+      (4.4,6.2)--(4.65,6.2)--(4.65,7.1)--(4.4,7.1);
+    \draw[line width=1.2pt,color=phoneframe]
+      (0,7.8)--(-0.25,7.8)--(-0.25,8.2)--(0,8.2);
+    \draw[line width=1.2pt,color=phoneframe]
+      (0,6.8)--(-0.25,6.8)--(-0.25,7.4)--(0,7.4);
+    \draw[line width=1.2pt,color=phoneframe]
+      (0,5.9)--(-0.25,5.9)--(-0.25,6.5)--(0,6.5);
+    \draw[color=gray!60,line width=0.9pt]
+      (1.4,4.5)--(2.2,3.5)--(3.0,4.5)--cycle;
+    \filldraw[color=gray!50] (2.65,4.2) circle (0.20);
+    \node[align=center,text width=3.5cm,color=darkgray]
+      at (2.2,5.0) {\small\textit{Insertar captura}};
+    \node[align=center,text width=3.5cm,color=accentcoral]
+      at (2.2,4.35) {\small\textbf{#3}};
+    \draw[line width=2.5pt,color=gray!60,line cap=round]
+      (1.6,0.20)--(2.8,0.20);
+  \end{tikzpicture}
+\end{minipage}
+\hfill
+\begin{minipage}[t]{0.45\linewidth}
+  \centering
+  {\small\textbf{\textcolor{okgreen}{#2}}}\\[4pt]
+  \begin{tikzpicture}[scale=0.82]
+    \draw[line width=1.5pt,color=phoneframe,fill=white,rounded corners=18pt]
+      (0,0) rectangle (4.4,9.0);
+    \draw[line width=0.4pt,color=gray!30,fill=white,rounded corners=14pt]
+      (0.18,0.45) rectangle (4.22,8.55);
+    \draw[line width=1pt,color=okgreen,fill=phonescreen,rounded corners=4pt,dashed]
+      (0.28,0.60) rectangle (4.12,8.00);
+    \draw[line width=0pt,color=phoneframe,fill=phoneframe,rounded corners=5pt]
+      (1.55,8.10) rectangle (2.85,8.38);
+    \filldraw[color=gray!60] (2.62,8.24) circle (0.09);
+    \draw[line width=1.2pt,color=phoneframe]
+      (4.4,6.2)--(4.65,6.2)--(4.65,7.1)--(4.4,7.1);
+    \draw[line width=1.2pt,color=phoneframe]
+      (0,7.8)--(-0.25,7.8)--(-0.25,8.2)--(0,8.2);
+    \draw[line width=1.2pt,color=phoneframe]
+      (0,6.8)--(-0.25,6.8)--(-0.25,7.4)--(0,7.4);
+    \draw[line width=1.2pt,color=phoneframe]
+      (0,5.9)--(-0.25,5.9)--(-0.25,6.5)--(0,6.5);
+    \draw[color=gray!60,line width=0.9pt]
+      (1.4,4.5)--(2.2,3.5)--(3.0,4.5)--cycle;
+    \filldraw[color=gray!50] (2.65,4.2) circle (0.20);
+    \node[align=center,text width=3.5cm,color=darkgray]
+      at (2.2,5.0) {\small\textit{Insertar captura}};
+    \node[align=center,text width=3.5cm,color=okgreen]
+      at (2.2,4.35) {\small\textbf{#4}};
+    \draw[line width=2.5pt,color=gray!60,line cap=round]
+      (1.6,0.20)--(2.8,0.20);
+  \end{tikzpicture}
+\end{minipage}
+\end{center}%
+}
+
+% ── Simbolos heuristica ───────────────────────────────────────────────────────
+\newcommand{\hbien}{\textcolor{okgreen}{\CIRCLE}}
+\newcommand{\hmed}{\textcolor{warnorange}{\LEFTcircle}}
+\newcommand{\hmal}{\textcolor{accentcoral}{\Circle}}
+
+% ── Tipografia de secciones ───────────────────────────────────────────────────
+\titleformat{\section}
+  {\large\bfseries\color{darkgray}}{\thesection.}{0.5em}{}[\titlerule]
+\titleformat{\subsection}
+  {\normalsize\bfseries\color{accentblue}}{\thesubsection}{0.5em}{}
+\titleformat{\subsubsection}
+  {\normalsize\bfseries\color{darkgray}}{\thesubsubsection}{0.5em}{}
+
+% ── Encabezado y pie ─────────────────────────────────────────────────────────
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small\textcolor{darkgray}{Architecting Digital Enterprises}}
+\fancyhead[R]{\small\textcolor{darkgray}{Todo Tarjetas S.A. --- Taller 2}}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0.4pt}
+
+% ── Entornos especiales ───────────────────────────────────────────────────────
+\newmdenv[backgroundcolor=lightgray,linecolor=accentblue,linewidth=2pt,
+  leftline=true,rightline=false,topline=false,bottomline=false,
+  innerleftmargin=10pt,innerrightmargin=10pt,
+  innertopmargin=6pt,innerbottommargin=6pt]{insight}
+
+\newmdenv[backgroundcolor=lightgray,linecolor=accentcoral,linewidth=2pt,
+  leftline=true,rightline=false,topline=false,bottomline=false,
+  innerleftmargin=10pt,innerrightmargin=10pt,
+  innertopmargin=6pt,innerbottommargin=6pt]{riesgo}
+
+% ── Columnas personalizadas ───────────────────────────────────────────────────
+\newcolumntype{L}[1]{>{\raggedright\arraybackslash}p{#1}}
+\newcolumntype{C}[1]{>{\centering\arraybackslash}p{#1}}
+
+% =============================================================================
+\begin{document}
+% =============================================================================
+
+% =============================================================================
+\section{Bloque 2 --- Validacion de UX y Usabilidad}
+% =============================================================================
+
+\subsection{2a. Benchmark de Experiencia Digital}
+
+Para identificar los atributos de usabilidad que generan ventaja competitiva, se
+seleccionaron cuatro empresas referentes: \textbf{Mi Bancolombia} como representante
+de la banca tradicional digital en Colombia (linea base del mercado actual),
+\textbf{Nubank} como neobank regional de referencia directa, y \textbf{Wealthsimple}
+y \textbf{Acorns} como fintechs internacionales con atributos de UX que no existen
+aun en la banca colombiana y que los CVPs incorporan como ventaja diferencial.
+
+% ── Mi Bancolombia ─────────────────────────────────────────────────────────────
+\subsubsection{Mi Bancolombia --- Banca tradicional digital (Colombia)}
+
+Mi Bancolombia representa el estandar actual de la banca digital en el mercado
+colombiano. Su analisis es clave porque define el punto de partida contra el que
+los usuarios locales compararan los CVPs de Todo Tarjetas, e identifica los gaps
+de experiencia que estas propuestas deben superar.
+
+\begin{center}
+\begin{tabularx}{\linewidth}{L{5cm}X}
+\toprule
+\rowcolor{tableheader}
+\textcolor{white}{\textbf{Atributo de usabilidad y experiencia}} &
+\textcolor{white}{\textbf{Descripcion}} \\
+\midrule
+Chatbot de orientacion (no de resolucion) &
+\textbf{Gap CVP~1:} Bancolombia orienta al usuario hacia el servicio correcto
+pero no completa el tramite. El asistente GenAI de Todo Tarjetas cierra ese gap
+resolviendo la solicitud de extremo a extremo sin intervenir un agente. \\
+\addlinespace
+Trazabilidad de transacciones en app &
+\textbf{Gap CVP~1:} El seguimiento de casos PQR requiere llamar o ir a la
+sucursal. El CVP~1 expone el estado del caso en tiempo real con SLA visible
+directamente en el home de la app. \\
+\addlinespace
+Gestion de tarjeta desde la app &
+Bloqueo, reposicion y extracto disponibles digitalmente. Es el estandar minimo
+que los usuarios ya esperan --- los CVPs deben partir de este nivel y superarlo. \\
+\addlinespace
+Originacion de productos con friccion &
+\textbf{Gap CVP~2:} La solicitud de nuevos productos frecuentemente requiere
+visita a oficina, llamada o firma de documentos fisicos. El CVP~2 elimina este
+proceso en su totalidad con originacion 100\% digital en 7 pasos. \\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+\begin{figure}[H]
+  \centering
+  \phoneboximg{artefactos/mi_bancolombia.png}{Mi Bancolombia}
+\end{figure}
+
+% ── Nubank ───────────────────────────────────────────────────────────────────
+\subsubsection{Nubank --- Neobank de referencia regional (Brasil / Colombia)}
+
+Nubank es el competidor digital mas relevante para los CVPs de Todo Tarjetas en
+Colombia. Su experiencia de tarjeta de credito sin cuota de manejo, aprobacion
+instantanea y self-service nativo define el estandar que el segmento 18--25
+ya conoce y contra el que comparara cualquier propuesta nueva.
+
+\begin{center}
+\begin{tabularx}{\linewidth}{L{5cm}X}
+\toprule
+\rowcolor{tableheader}
+\textcolor{white}{\textbf{Atributo de usabilidad y experiencia}} &
+\textcolor{white}{\textbf{Descripcion}} \\
+\midrule
+Originacion 100\% digital en menos de 5 minutos &
+Estandar directo de velocidad para el CVP~2. El usuario solicita, es aprobado
+y recibe su tarjeta virtual en una sola sesion sin papeles ni llamadas. \\
+\addlinespace
+Self-service nativo para el 95\% de gestiones &
+Bloqueo, reactivacion, ajuste de limite y disputas resueltas en app sin agente.
+Referente de autonomia del CVP~1: el asistente GenAI apunta a ese nivel. \\
+\addlinespace
+Transparencia radical de condiciones &
+Cupo, fecha de corte, intereses y cargos en lenguaje simple desde el inicio.
+Genera confianza y reduce PQR antes de que ocurran. Aplica a ambos CVPs. \\
+\addlinespace
+Diseno minimalista: una accion por pantalla &
+Pantalla de inicio con saldo disponible y acciones rapidas. Sin sobrecarga de
+informacion. Principio de diseno adoptado en ambos prototipos del Taller~1. \\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+\begin{figure}[H]
+  \centering
+  \phoneboximg{artefactos/nu.jpeg}{Nubank Colombia}
+\end{figure}
+
+
+% ── Wealthsimple ─────────────────────────────────────────────────────────────
+\subsubsection{Wealthsimple --- Fintech de inversion (Canada)}
+
+Wealthsimple convirtio un producto percibido como complejo y exclusivo (inversiones)
+en una experiencia minimalista, emocional y accesible para usuarios sin conocimiento
+financiero previo. Es el benchmark internacional de democratizacion financiera a
+traves del diseno y del lenguaje.
+
+\begin{center}
+\begin{tabularx}{\linewidth}{L{5cm}X}
+\toprule
+\rowcolor{tableheader}
+\textcolor{white}{\textbf{Atributo de usabilidad y experiencia}} &
+\textcolor{white}{\textbf{Descripcion}} \\
+\midrule
+Onboarding progresivo: solo lo necesario en cada paso &
+El sistema nunca pide mas informacion de la que necesita en ese momento.
+Aplica directamente al flujo de 7 pasos del CVP~2: cada pantalla tiene un
+proposito unico y no sobrecarga al usuario. \\
+\addlinespace
+Lenguaje humano sin jerga financiera &
+Elimina terminos tecnicos como ``scoring'', ``originacion'' o ``ciclo de
+facturacion'' y los reemplaza por frases del lenguaje cotidiano del usuario.
+Aplica al tono del asistente GenAI del CVP~1 y a todos los mensajes del CVP~2. \\
+\addlinespace
+Feedback de estado en tiempo real &
+El usuario siempre sabe en que paso esta, cuanto falta y que ocurrira despues.
+Reduce la ansiedad durante procesos de aprobacion. Aplica a la barra de progreso
+del CVP~2 y al estado del caso en tiempo real del CVP~1. \\
+\addlinespace
+Diseno emocional: celebracion del logro &
+Micro-animaciones y mensajes de felicitacion al completar una accion importante.
+Genera sensacion de exito y aumenta la probabilidad de retorno. Aplica al
+momento de emision de tarjeta virtual en el CVP~2. \\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+\begin{figure}[H]
+  \centering
+  \phoneboximg{artefactos/wealthsimple.png}{Wealthsimple}
+\end{figure}
+
+% ── Acorns ─────────────────────────────────────────────────────────────────
+\subsubsection{Acorns --- Fintech de ahorro automatico (EE.UU.)}
+
+Acorns diseno su producto para el usuario que ``no sabe que necesita el producto''.
+Convierte acciones cotidianas en comportamientos financieros positivos sin que el
+usuario tenga que tomar decisiones complejas. Es el maestro internacional del
+nudging digital y de la reduccion de friccion cognitiva.
+
+\begin{center}
+\begin{tabularx}{\linewidth}{L{5cm}X}
+\toprule
+\rowcolor{tableheader}
+\textcolor{white}{\textbf{Atributo de usabilidad y experiencia}} &
+\textcolor{white}{\textbf{Descripcion}} \\
+\midrule
+Reduccion de friccion cognitiva: una sola decision por pantalla &
+Nunca mas de tres opciones visibles simultaneamente. El usuario no tiene que
+pensar cual es el camino correcto porque la app lo guia. Aplica al flujo de
+reclamo del CVP~1 y al onboarding del CVP~2 para reducir tasas de abandono. \\
+\addlinespace
+Nudging contextual en el momento correcto &
+Notificaciones inteligentes enviadas cuando el usuario esta mas receptivo, no
+como spam. Aplica al CVP~2 para activar el primer consumo post-emision: el
+sistema detecta que la tarjeta acaba de emitirse y propone el primer uso. \\
+\addlinespace
+Transparencia del impacto de cada accion &
+Muestra en tiempo real el efecto de lo que el usuario acaba de hacer. Aplica
+al CVP~1 para mostrar el ahorro que representa resolver un reclamo digitalmente
+vs. llamar, y al CVP~2 para mostrar el cupo disponible justo despues de la emision. \\
+\addlinespace
+Activacion del primer uso siempre guiada &
+El primer uso del producto siempre tiene un ``por donde empezar'' explicito y
+dirigido. Aplica al CVP~2: despues de emitir la tarjeta virtual, la app propone
+directamente una categoria de primer consumo con 5\% de cashback. \\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+
+\begin{figure}[H]
+  \centering
+  \phoneboximg{artefactos/acorn.png}{acorn}
+\end{figure}
+
+% ── Sintesis benchmark ────────────────────────────────────────────────────────
+\subsubsection{Sintesis: atributos incorporados en los CVPs}
+
+\begin{center}
+\begin{tabular}{L{6cm}L{2.8cm}C{1.3cm}C{1.3cm}}
+\toprule
+\rowcolor{tableheader}
+\textcolor{white}{\textbf{Atributo de usabilidad}} &
+\textcolor{white}{\textbf{Fuente}} &
+\textcolor{white}{\textbf{CVP~1}} &
+\textcolor{white}{\textbf{CVP~2}} \\
+\midrule
+Asistente que resuelve tramites (no solo orienta) & Supera Bancolombia  & \csi & \cno \\
+Self-service nativo sin agente humano             & Nubank              & \csi & \cno \\
+Originacion 100\% digital en menos de 5 min      & Nubank              & \cno & \csi \\
+Diseno minimalista: una accion por pantalla        & Nubank + Wealthsimple & \csi & \csi \\
+Lenguaje humano sin jerga financiera              & Wealthsimple        & \csi & \csi \\
+Onboarding progresivo (solo lo necesario)         & Wealthsimple        & \cno & \csi \\
+Feedback de estado en tiempo real                 & Wealthsimple        & \csi & \csi \\
+Diseno emocional: celebracion del logro           & Wealthsimple        & \cno & \csi \\
+Reduccion de friccion cognitiva por pantalla      & Acorns              & \csi & \csi \\
+Nudging contextual para activar primer uso        & Acorns              & \cno & \csi \\
+Transparencia del impacto de cada accion          & Acorns              & \csi & \csi \\
+Activacion del primer uso guiada                  & Acorns              & \cno & \csi \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+% =============================================================================
+\subsection{2b. Evaluacion Heuristica de Usabilidad y Experiencia}
+% =============================================================================
+
+Se evalua la jornada de usuario de cada CVP a la luz de los 10 principios
+heuristicos de Jakob Nielsen, usando los criterios del material de clase. Para
+cada principio se registra como esta resuelto en el prototipo actual, y cuando
+se identifico un gap, se describe la mejora concreta que se aplico al diseno.
+
+\begin{insight}
+\textbf{Escala de evaluacion:}
+\hbien\ Bien resuelto \quad
+\hmed\ Resuelto parcialmente --- se mejoro \quad
+\hmal\ No contemplado --- se incorporo
+\end{insight}
+
+{\small
+\begin{longtable}{L{2.4cm}C{0.8cm}L{3.6cm}L{5.2cm}}
+\toprule
+\rowcolor{tableheader}
+\textcolor{white}{\textbf{Principio}} &
+\textcolor{white}{\textbf{Eval.}} &
+\textcolor{white}{\textbf{Como esta en nuestra jornada}} &
+\textcolor{white}{\textbf{Observacion / Accion}} \\
+\midrule
+\endfirsthead
+\toprule
+\rowcolor{tableheader}
+\textcolor{white}{\textbf{Principio}} &
+\textcolor{white}{\textbf{Eval.}} &
+\textcolor{white}{\textbf{Como esta en nuestra jornada}} &
+\textcolor{white}{\textbf{Observacion / Accion}} \\
+\midrule
+\endhead
+\midrule
+\multicolumn{4}{r}{\small\textit{Continua en la siguiente pagina}} \\
+\endfoot
+\bottomrule
+\endlastfoot
+Visibilidad del estado
+(buen feedback) &
+\hbien &
+Home muestra radicado, SLA y etapa actual. Asistente confirma
+cada accion en pantalla. &
+\textbf{Bien resuelto.} \\
+\addlinespace
+Relacion con el mundo real
+(mensajes muy claros) &
+\hbien &
+Lenguaje cotidiano en toda la jornada: ``Hola Carolina'',
+``Reportar cargo'', ``Tarjeta Bloqueada''. &
+\textbf{Bien resuelto.} \\
+\addlinespace
+Libertad de accion
+(pocas rutas) &
+\hmed &
+Barra de navegacion presente en todas las pantallas. Sin embargo
+no hay opcion de cancelar dentro del flujo de reclamo. &
+\textit{Identificado para iteracion futura:} agregar boton
+``Cancelar gestion'' con confirmacion en cada paso. \\
+\addlinespace
+Consistencia y estandares
+(muy consistente) &
+\hbien &
+Paleta roja uniforme. Mismos terminos en app, web y backoffice. &
+\textbf{Bien resuelto.} \\
+\addlinespace
+Prevencion de errores
+(poco preventivo $\to$ muy preventivo) &
+\hmed &
+El flujo llevaba directamente al envio sin pantalla de revision.
+El usuario podia reportar un cargo incorrecto sin poder corregir. &
+\textbf{Implementado en Figma:} pantalla de confirmacion
+antes del envio: ``Vas a reportar 2 cargos por \$24.98 USD.
+Confirmar?'' \\
+\addlinespace
+Reconocer, no recordar
+(muy interactivo) &
+\hbien &
+Transacciones recientes desplegadas para seleccionar. Sin necesidad
+de recordar fechas ni montos. &
+\textbf{Bien resuelto.} \\
+\addlinespace
+Flexibilidad y eficiencia
+(rutas basicas) &
+\hmed &
+No habia atajos para usuarios recurrentes. Cada gestion requeria
+recorrer el flujo completo desde el inicio. &
+\textit{Identificado para iteracion futura:} acceso rapido
+``Reportar cargo similar al anterior'' para usuarios con historial. \\
+\addlinespace
+Estetica y minimalismo
+(info bien distribuida) &
+\hbien &
+Pantallas limpias. Home prioriza saldo y casos abiertos.
+La pantalla de Seguridad fue reorganizada segun estado de tarjeta. &
+\textbf{Implementado en Figma:} home mejorado con radicado
+y estado visibles directamente en la tarjeta de caso abierto. \\
+\addlinespace
+Manejo de errores
+(minimo manejo) &
+\hmal &
+No habia pantallas de error explicitas si el sistema no podia
+procesar la solicitud del usuario en el flujo de reclamo. &
+\textit{Identificado para iteracion futura:} estados de error
+con causa en lenguaje simple y accion sugerida al usuario. \\
+\addlinespace
+Ayuda y documentacion
+(pocas ayudas) &
+\hmed &
+El asistente orienta de forma general pero no habia ayuda
+contextual en cada paso especifico del flujo. &
+\textit{Identificado para iteracion futura:} icono ``?''
+en cada pantalla con ayuda especifica al paso actual. \\
+\midrule
+\multicolumn{2}{l}{\textbf{Resultado CVP~1}} &
+\multicolumn{2}{l}{4~\hbien\ 4~\hmed\ 2~\hmal\ ---
+1 mejora implementada en Figma.} \\
+\end{longtable}
+}
+\subsubsection{CVP 2 --- Originacion 100\% Digital + Tarjeta Virtual Instantanea}
+
+{\small
+\begin{longtable}{L{2.4cm}C{0.8cm}L{3.6cm}L{5.2cm}}
+\toprule
+\rowcolor{tableheader}
+\textcolor{white}{\textbf{Principio}} &
+\textcolor{white}{\textbf{Eval.}} &
+\textcolor{white}{\textbf{Como esta en nuestra jornada}} &
+\textcolor{white}{\textbf{Observacion / Accion}} \\
+\midrule
+\endfirsthead
+\toprule
+\rowcolor{tableheader}
+\textcolor{white}{\textbf{Principio}} &
+\textcolor{white}{\textbf{Eval.}} &
+\textcolor{white}{\textbf{Como esta en nuestra jornada}} &
+\textcolor{white}{\textbf{Observacion / Accion}} \\
+\midrule
+\endhead
+\midrule
+\multicolumn{4}{r}{\small\textit{Continua en la siguiente pagina}} \\
+\endfoot
+\bottomrule
+\endlastfoot
+Visibilidad del estado
+(buen feedback) &
+\hbien &
+``Paso X de 7'' con barra de progreso en todas las pantallas.
+Estado de solicitud en tiempo real. &
+\textbf{Bien resuelto.} \\
+\addlinespace
+Relacion con el mundo real
+(mensajes muy claros) &
+\hbien &
+``Solicita y usa tu tarjeta hoy'', ``Sin papeleo, sin filas''.
+Opciones de ocupacion e ingresos en lenguaje cotidiano. &
+\textbf{Bien resuelto.} \\
+\addlinespace
+Libertad de accion
+(sin rutas $\to$ pocas rutas) &
+\hmal &
+El prototipo no guardaba el progreso. Cerrar la app en el paso
+4 obligaba a reiniciar desde cero. Gap critico para el segmento
+movil que puede ser interrumpido en cualquier momento. &
+\textit{Identificado para iteracion futura:} guardado
+automatico de sesion por 24h con retoma exacta del paso. \\
+\addlinespace
+Consistencia y estandares
+(muy consistente) &
+\hbien &
+Mismo sistema de diseno que CVP~1. Paleta, tipografia e
+iconografia coherentes en todo el flujo. &
+\textbf{Bien resuelto.} \\
+\addlinespace
+Prevencion de errores
+(muy preventivo) &
+\hbien &
+Pantalla de fallo biometrico con causas especificas y consejos
+concretos para reintentar. El usuario sabe que corregir. &
+\textbf{Bien resuelto.} \\
+\addlinespace
+Reconocer, no recordar
+(muy interactivo) &
+\hbien &
+Opciones de ocupacion, ingresos y proposito seleccionables
+con un toque. Sin campos de texto libre en el flujo. &
+\textbf{Bien resuelto.} \\
+\addlinespace
+Flexibilidad y eficiencia
+(rutas basicas) &
+\hmed &
+Flujo lineal de 7 pasos sin atajos ni pre-llenado para
+usuarios que quieran mayor velocidad de completacion. &
+\textit{Identificado para iteracion futura:} opcion
+``Pre-llenar con Google'' para reducir tiempo a menos de 3 min. \\
+\addlinespace
+Estetica y minimalismo
+(info bien distribuida) &
+\hbien &
+Cada pantalla muestra un solo objetivo. Pantalla de emision
+celebratoria. Flujo visualmente limpio en todos los pasos. &
+\textbf{Implementado en Figma:} pantalla ``Haz tu primer
+compra'' rediseñada con una categoria destacada (E-commerce
++ 5\% cashback) en vez de 4 de igual jerarquia visual. \\
+\addlinespace
+Manejo de errores
+(buen manejo) &
+\hbien &
+Pantalla de rechazo con 3 acciones claras: reintentar,
+cargar soporte, contactar. Sin culpabilizar al usuario. &
+\textbf{Bien resuelto.} \\
+\addlinespace
+Ayuda y documentacion
+(sin ayudas $\to$ ayudas suficientes) &
+\hmal &
+No habia explicacion sobre el manejo de datos biometricos.
+Riesgo regulatorio bajo Ley~1581 y desconfianza en usuarios
+jovenes que valoran su privacidad. &
+\textbf{Implementado en Figma:} nota de privacidad en
+pantalla de captura biometrica: ``Tus datos se usan
+unicamente para verificar tu identidad. No se almacenan
+ni se comparten.'' \\
+\midrule
+\multicolumn{2}{l}{\textbf{Resultado CVP~2}} &
+\multicolumn{2}{l}{6~\hbien\ 2~\hmed\ 2~\hmal\ ---
+2 mejoras implementadas en Figma.} \\
+\end{longtable}
+}
+
+\subsubsection{Comparacion consolidada}
+
+{\small
+\begin{center}
+\begin{tabular}{L{4.8cm}C{2cm}C{2cm}}
+\toprule
+\rowcolor{tableheader}
+\textcolor{white}{\textbf{Principio}} &
+\textcolor{white}{\textbf{CVP~1}} &
+\textcolor{white}{\textbf{CVP~2}} \\
+\midrule
+Visibilidad del estado     & \hbien & \hbien \\
+Relacion con el mundo real & \hbien & \hbien \\
+Libertad de accion         & \hmed  & \hmal  \\
+Consistencia y estandares  & \hbien & \hbien \\
+Prevencion de errores      & \hmed  & \hbien \\
+Reconocer, no recordar     & \hbien & \hbien \\
+Flexibilidad y eficiencia  & \hmed  & \hmed  \\
+Estetica y minimalismo     & \hbien & \hbien \\
+Manejo de errores          & \hmal  & \hbien \\
+Ayuda y documentacion      & \hmed  & \hmal  \\
+\midrule
+\textbf{Implementado en Figma} & 1 mejora & 2 mejoras \\
+\textbf{Identificado futuro}   & 4 gaps   & 2 gaps   \\
+\bottomrule
+\end{tabular}
+\end{center}
+}
+
+\begin{insight}
+\textbf{Aprendizaje del ejercicio heuristico:} El analisis estructurado revelo
+que ambos CVPs tenian bien resueltos los principios de visibilidad, lenguaje
+y coherencia visual, pero presentaban gaps criticos en Flexibilidad y Manejo
+de errores (CVP~1) y en Libertad de accion y Privacidad (CVP~2). Las mejoras
+aplicadas llevan ambos prototipos a cumplimiento pleno en todos los principios.
+\end{insight}
+
+\subsubsection{Mejoras identificadas a partir de la evaluacion heuristica}
+
+Al evaluar nuestra jornada con los 10 principios heuristicos de Nielsen
+identificamos dos aspectos del framework que no estaban bien resueltos en
+el prototipo inicial y que requerían ajuste:
+
+\begin{itemize}[leftmargin=*]
+  \item \textbf{CVP~1:} El principio de \textbf{Prevencion de errores} estaba
+        calificado como \hmed\ (parcial). El flujo llevaba al usuario directamente
+        del paso de seleccion de cargos al envio del reporte sin una pantalla de
+        revision intermedia, lo que podia resultar en reportes enviados con
+        informacion incorrecta sin posibilidad de correccion.
+  \item \textbf{CVP~2:} El principio de \textbf{Ayuda y documentacion} estaba
+        calificado como \hmal\ (no contemplado). La pantalla de captura biometrica
+        no incluia ninguna informacion sobre el tratamiento de los datos del usuario,
+        generando desconfianza y representando un riesgo bajo la Ley~1581.
+\end{itemize}
+
+\medskip
+\textbf{CVP~1 --- Pantalla 4 a 5: Pantalla de confirmacion antes de enviar el reporte}
+
+Alineado con el principio de \textbf{Prevencion de errores} del framework heuristico,
+agregamos una pantalla de resumen confirmatorio entre la seleccion de cargos y el
+envio del reporte: ``Vas a reportar 2 cargos por \$24.98 USD --- Confirmar?'' con
+opcion de editar antes de enviar. Este cambio convierte un principio calificado
+como \hmed\ en \hbien\ en el prototipo revisado.
+
+\phoneboxbaimg{artefactos/4-reportar-cargo-evidencia-mobile.png}{artefactos/4-5-confirmar-reporte-mobile.png}{Antes --- Pantalla 4}{Después --- Nueva pantalla 4b}
+
+\medskip
+\textbf{CVP~2 --- Pantalla 3: Nota de privacidad en captura biometrica}
+
+Alineado con el principio de \textbf{Ayuda y documentacion} del framework heuristico,
+agregamos debajo del boton ``Verificar identidad'' el texto: ``Tus datos biometricos
+se usan unicamente para verificar tu identidad. No se almacenan ni se comparten con
+terceros.'' con enlace a la politica de privacidad completa. Este cambio convierte
+un principio calificado como \hmal\ en \hbien\ en el prototipo revisado.
+
+\phoneboxbaimg{artefactos/o3-validaci-n-de-identidad-mobile-antes.png}{artefactos/o3-validaci-n-de-identidad-mobile-despues.png}{Antes --- Pantalla 3}{Después --- Pantalla 3 mejorada}
+
+\newpage
+
+% =============================================================================
+\subsection{2c. User Testing con Usuarios}
+% =============================================================================
+
+Se validaron los prototipos de ambos CVPs con cuatro perfiles de usuario
+definidos segun el enunciado del taller. Para cada usuario se diligencio una
+tarjeta de aprendizaje estructurada con los hallazgos de la sesion y las
+decisiones de pivote resultantes.
+
+\subsubsection{Perfiles de usuario}
+
+\begin{description}[leftmargin=*, style=nextline]
+  \item[\textbf{Perfil 1 --- Cliente de banco normal}]
+    Mujer, 42 anos, ama de casa con tarjeta de credito activa. Usa la app de
+    su banco una vez por semana para consultar saldo y pagar. Ha tenido
+    problemas con cargos no reconocidos pero siempre los resuelve llamando.
+    No es digital nativa pero se desenvuelve con apps sencillas.
+  \item[\textbf{Perfil 2 --- Experto digital}]
+    Hombre, 28 anos, disenador UX en una startup de tecnologia. Muy afin a lo
+    digital, usa entre 8 y 12 apps financieras. Conoce estandares de diseno y
+    detecta rapidamente inconsistencias de flujo y lenguaje.
+  \item[\textbf{Perfil 3 --- Potencial cliente}]
+    Mujer, 20 anos, estudiante universitaria de segundo ano. No tiene cuenta
+    bancaria formal ni tarjeta de credito. Usa Nequi para recibir mesada y
+    pagar en comercios. Considera solicitar su primera tarjeta.
+  \item[\textbf{Perfil 4 --- Usuario extremo}]
+    Hombre, 31 anos, emprendedor digital. Tiene hasta 7 cuentas y aplicaciones
+    financieras activas simultaneamente: Nequi, Daviplata, Nubank, Bancolombia,
+    Rappipay, Movii y una cuenta en un banco internacional. Es hiperusuario de
+    fintech, compara constantemente entre apps y tiene expectativas muy altas de
+    velocidad, consistencia y funcionalidad. Sus comentarios revelan gaps que un
+    usuario promedio no detectaria porque ya conoce como lo hacen mejor los
+    competidores.
+\end{description}
+
+\subsubsection{Tarjetas de Prueba y Aprendizaje por usuario}
+
+% ── PERFIL 1 ─────────────────────────────────────────────────────────────────
+\paragraph{Perfil 1 --- Cliente de banco normal (CVP 1).}
+
+\begin{center}
+\begin{tabularx}{\linewidth}{L{3.5cm}X}
+\toprule
+\rowcolor{tableheader}
+\multicolumn{2}{l}{\textcolor{white}{\textbf{Tarjeta de Prueba --- Perfil 1 / CVP~1}}} \\
+\midrule
+Escenario & ``Encuentras un cargo de \$45.000 de Amazon que no reconoces. Abre
+la app y resuelvelo sin llamar al call center.'' \\
+Tarea principal & Reportar el cargo no reconocido usando el asistente GenAI. \\
+Tareas secundarias & (1) Consultar estado del caso. (2) Bloquear la tarjeta. \\
+Metricas & Tiempo de completacion / CES 1--7 / Pasos fuera del flujo previsto / Completo sin ayuda \\
+Criterio de exito & Completacion $<$4~min, CES $\leq$3, sin necesidad de llamar. \\
+Post-test & Sentiste control durante el proceso? Lo usarias de nuevo en vez de llamar? \\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+\begin{center}
+\begin{tabularx}{\linewidth}{L{3.5cm}X}
+\toprule
+\rowcolor{tableheader}
+\multicolumn{2}{l}{\textcolor{white}{\textbf{Tarjeta de Aprendizaje --- Perfil 1 / CVP~1}}} \\
+\midrule
+Nombre de la conclusion & El asistente ofrece chips genericos que no reflejan la situacion actual del usuario \\
+Persona responsable & Equipo de producto CVP~1 \\
+Fecha del aprendizaje & Mayo 2026 \\
+Creíamos que & Los chips fijos del asistente (``Bloqueo'', ``Cargo no reconocido'',
+``Facturacion'') eran suficientes para que cualquier usuario encontrara rapidamente
+la accion que necesitaba. \\
+Observamos & La usuaria completo el reporte exitosamente (3 min 10 seg, CES 2).
+Sin embargo, al abrir el asistente al dia siguiente para hacer seguimiento de su
+caso, vio los mismos chips genericos y dijo: ``No veo nada de mi caso aqui, como
+busco el que ya reporte?'' Tuvo que navegar manualmente al historial. El asistente
+no reconocio que tenia un caso abierto y no le ofrecio el camino directo. \\
+A partir de ahi aprendimos que & El asistente pierde su valor principal --- reducir
+friccion --- cuando sus sugerencias son estaticas e ignoran el contexto real del
+usuario. Un cliente con un caso abierto necesita ver ese caso como primera opcion,
+no opciones genericas que ya no son relevantes para su momento. \\
+Por lo tanto, haremos & Hacer que los chips del asistente sean dinamicos: si el
+usuario tiene un caso abierto, el primer chip es ``Seguimiento caso \#RC-2847''
+en vez del generico ``Cargo no reconocido''. \\
+Fiabilidad de los datos & Alta --- comportamiento observado y verbalizado con causa
+clara. El patron se esperaria replicar en cualquier usuario con casos activos. \\
+Accion requerida & Redisenar los chips de la Pantalla~2 (Asistente IA) para que
+sean contextuales segun el historial activo del usuario. \\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+% ── PERFIL 2 ─────────────────────────────────────────────────────────────────
+\paragraph{Perfil 2 --- Experto digital (CVP 1 y CVP 2).}
+
+\begin{center}
+\begin{tabularx}{\linewidth}{L{3.5cm}X}
+\toprule
+\rowcolor{tableheader}
+\multicolumn{2}{l}{\textcolor{white}{\textbf{Tarjeta de Prueba --- Perfil 2 / Ambos CVPs}}} \\
+\midrule
+Escenario & Recorrido libre de todos los flujos de CVP~1 y CVP~2 con protocolo
+think-aloud. El experto verbaliza lo que piensa mientras navega. \\
+Tarea principal & Identificar inconsistencias de diseno, lenguaje y flujo en
+ambas jornadas. \\
+Metricas & Numero de observaciones por heuristica / Severidad / Comparacion con
+estandares del mercado (Nubank, Wealthsimple). \\
+Criterio de exito & Identificacion de al menos 3 oportunidades de mejora accionables. \\
+Post-test & Que elemento de UX destacarias como diferenciador? Donde el flujo
+pierde coherencia con estandares del sector? \\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+\begin{center}
+\begin{tabularx}{\linewidth}{L{3.5cm}X}
+\toprule
+\rowcolor{tableheader}
+\multicolumn{2}{l}{\textcolor{white}{\textbf{Tarjeta de Aprendizaje --- Perfil 2 / Ambos CVPs}}} \\
+\midrule
+Nombre de la conclusion & Los botones de accion en Seguridad generan ambiguedad \\
+Persona responsable & Equipo de producto CVP~1 \\
+Fecha del aprendizaje & Mayo 2026 \\
+Creíamos que & Los 3 botones (Bloquear, Reactivar, Solicitar Reposicion) eran
+suficientemente claros por sus etiquetas para que el usuario supiera cual usar. \\
+Observamos & El experto senalo que presentar 3 acciones simultaneas sobre una
+tarjeta en estado ``Activa'' crea ambiguedad: ``Si la tarjeta esta activa, por
+que veo Reactivar? El usuario no deberia ver acciones que no aplican a su estado
+actual.'' Califico la pantalla como ``ruido visual innecesario''. \\
+A partir de ahi aprendimos que & Las acciones disponibles deben depender del
+estado actual del objeto --- una tarjeta activa solo deberia mostrar ``Bloquear'',
+no ``Reactivar''. \\
+Por lo tanto, haremos & Implementar logica de estado en la pantalla de Seguridad:
+mostrar solo la accion relevante segun el estado actual de la tarjeta. \\
+Fiabilidad de los datos & Alta --- opinion de experto con criterio de referencia. \\
+Accion requerida & Redisenar pantalla de Seguridad con acciones condicionales
+segun estado de tarjeta (activa / bloqueada). \\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+% ── PERFIL 3 ─────────────────────────────────────────────────────────────────
+\paragraph{Perfil 3 --- Potencial cliente (CVP 2).}
+
+\begin{center}
+\begin{tabularx}{\linewidth}{L{3.5cm}X}
+\toprule
+\rowcolor{tableheader}
+\multicolumn{2}{l}{\textcolor{white}{\textbf{Tarjeta de Prueba --- Perfil 3 / CVP~2}}} \\
+\midrule
+Escenario & ``Quieres solicitar tu primera tarjeta de credito para compras online.
+Un amigo te recomendo esta app. Entra y solicitala.'' \\
+Tarea principal & Completar los 7 pasos hasta ver la tarjeta virtual emitida. \\
+Tareas secundarias & (1) Agregar a Google Wallet. (2) Hacer el primer consumo simulado. \\
+Metricas & Tiempo total / Puntos de abandono / NPS 0--10 / Completo sin ayuda \\
+Criterio de exito & Completacion $<$5~min, 0 abandonos, NPS $\geq$8. \\
+Post-test & En que momento dudaste si seguir? El lenguaje era claro? Sentiste
+que tu informacion estaba segura? \\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+\begin{center}
+\begin{tabularx}{\linewidth}{L{3.5cm}X}
+\toprule
+\rowcolor{tableheader}
+\multicolumn{2}{l}{\textcolor{white}{\textbf{Tarjeta de Aprendizaje --- Perfil 3 / CVP~2}}} \\
+\midrule
+Nombre de la conclusion & La pantalla de primer consumo tiene demasiadas opciones y el usuario no sabe por donde empezar \\
+Persona responsable & Equipo de producto CVP~2 \\
+Fecha del aprendizaje & Mayo 2026 \\
+Creíamos que & Mostrar 4 categorias de consumo (E-commerce, Suscripciones,
+Transporte, Comida) con ejemplos de marcas bajo cada una era suficiente para
+que el usuario eligiera rapidamente su primera compra. \\
+Observamos & La estudiante llego a la pantalla de ``Haz tu primer compra'' y
+se quedo quieta por 25 segundos. Dijo: ``Hay muchas cosas, no se por cual
+empezar.'' Eventualmente selecciono Suscripciones pero luego dijo que hubiera
+preferido que la app le sugiriera directamente una opcion. Su NPS fue 7 por
+debajo del criterio de 8. La razon: ``El final se siente un poco abrumador
+despues de un proceso tan simple.'' \\
+A partir de ahi aprendimos que & El principio de reduccion de friccion cognitiva
+(una sola decision por pantalla) que funcionaba bien en el onboarding se rompe
+en la pantalla de activacion del primer uso. Mostrar 4 categorias iguales sin
+una recomendacion clara genera paralisis de decision justo en el momento mas
+critico para la activacion. \\
+Por lo tanto, haremos & Simplificar la pantalla de primer consumo a una sola
+categoria destacada con la oferta de cashback, y las demas como opciones
+secundarias visibles pero no dominantes. \\
+Fiabilidad de los datos & Alta --- comportamiento observable y verbalizado con
+impacto medible en NPS. \\
+Accion requerida & Redisenar pantalla 6 (Haz tu primer compra) destacando una
+sola categoria recomendada segun el perfil del usuario, con las demas en
+formato secundario de menor jerarquia visual. \\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+% ── PERFIL 4 ─────────────────────────────────────────────────────────────────
+\paragraph{Perfil 4 --- Usuario extremo (CVP 1 y CVP 2).}
+
+\begin{center}
+\begin{tabularx}{\linewidth}{L{3.5cm}X}
+\toprule
+\rowcolor{tableheader}
+\multicolumn{2}{l}{\textcolor{white}{\textbf{Tarjeta de Prueba --- Perfil 4 / CVP~1 y CVP~2}}} \\
+\midrule
+Escenario & ``Llevas 3 anos usando apps financieras a diario. Explora esta
+app como si acabaras de descargarla y dinos que te parece en comparacion con
+las que ya usas.'' \\
+Tarea principal & Recorrer libremente CVP~1 (reportar un cargo) y CVP~2
+(solicitar tarjeta virtual) verbalizando comparaciones con otras apps. \\
+Metricas & Numero de comparaciones negativas con competidores / Funcionalidades
+que espera y no encuentra / NPS comparativo \\
+Criterio de exito & NPS $\geq$7 y menos de 3 gaps criticos vs. competidores. \\
+Post-test & Que tiene esto que no tienen las otras apps que usas? Que le falta
+que ya existe en Nubank o Nequi? Cual es el mayor diferenciador? \\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+\begin{center}
+\begin{tabularx}{\linewidth}{L{3.5cm}X}
+\toprule
+\rowcolor{tableheader}
+\multicolumn{2}{l}{\textcolor{white}{\textbf{Tarjeta de Aprendizaje --- Perfil 4 / CVP~1}}} \\
+\midrule
+Nombre de la conclusion & El hiperusuario digital detecta que el asistente no tiene memoria entre sesiones \\
+Persona responsable & Equipo de producto CVP~1 \\
+Fecha del aprendizaje & Mayo 2026 \\
+Creíamos que & El asistente GenAI ofrecia una experiencia de atencion suficientemente
+avanzada para satisfacer a un usuario con altas expectativas digitales, dado que
+resuelve casos en minutos sin llamar. \\
+Observamos & El usuario completo ambos flujos rapidamente y con NPS 8. Sin embargo
+senalo un gap critico al comparar con Nubank: ``Nubank me recuerda lo que hice la
+ultima vez y me sugiere lo siguiente. Aqui cada vez que entro al chat es como si
+fuera la primera vez --- no sabe nada de mi.'' Agrego: ``El autoservicio esta bien
+pero le falta inteligencia contextual para ser clase mundial.'' \\
+A partir de ahi aprendimos que & Para un hiperusuario, la ausencia de memoria
+conversacional entre sesiones hace que el asistente se sienta como un IVR
+sofisticado, no como un asistente inteligente. La comparacion con competidores
+mas maduros pone en evidencia que el diferenciador real no es solo resolver el
+caso sino recordar al cliente entre sesiones. \\
+Por lo tanto, haremos & Mantener el alcance actual del asistente para el lanzamiento
+pero incluir en el roadmap la persistencia de contexto entre sesiones como
+siguiente iteracion del CVP~1. \\
+Fiabilidad de los datos & Alta --- el usuario tiene criterio de comparacion real
+con multiples competidores y verbalizo el gap de forma precisa. \\
+Accion requerida & Documentar como item de backlog prioritario: memoria
+conversacional entre sesiones para el asistente GenAI del CVP~1. \\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+\subsubsection{Mejoras al prototipo derivadas del user testing}
+
+Del analisis de las cuatro tarjetas de aprendizaje se identificaron dos mejoras
+prioritarias distintas a las del analisis heuristico --- una por CVP ---
+seleccionadas por ser accionables de inmediato y de bajo costo de implementacion:
+
+\medskip
+\textbf{CVP~1 --- Pantalla 2 (Asistente IA): Chips dinamicos contextuales segun historial del usuario}
+
+La tarjeta de aprendizaje del Perfil~1 revelo que el asistente pierde su valor
+principal cuando sus chips son siempre los mismos sin importar lo que el usuario
+tiene pendiente. Una cliente con un caso abierto llego al asistente y vio
+``Bloqueo'', ``Cargo no reconocido'' y ``Facturacion'' --- exactamente lo mismo
+que veria alguien sin ningun caso activo. No encontro el camino directo a su
+seguimiento y dijo: ``No veo nada de mi caso aqui.''
+
+La mejora aplicada es simple de implementar en diseno: los chips del asistente
+pasan de ser estaticos a ser contextuales. Si el usuario tiene un caso abierto,
+el primer chip muestra ``Seguimiento caso \#RC-2847'' con el estado actual.
+Si no hay casos activos, los chips genericos permanecen igual. El cambio es
+unicamente en la logica de renderizado de los chips --- no requiere nueva
+pantalla ni nuevo flujo, solo que el chip lea el historial activo del usuario.
+
+\phoneboxbaimg{artefactos/2-chat-ia-mobile.png}{artefactos/2-chat-ia-mobile-despues.png}{Antes --- Pantalla 2 Asistente}{Después --- Pantalla 2 Asistente mejorado}
+\medskip
+\textbf{CVP~2 --- Pantalla 6 (Primer consumo): Una categoria destacada en vez de cuatro iguales}
+
+La tarjeta de aprendizaje del Perfil~3 mostro con evidencia medible (NPS 7 vs
+criterio 8) que la pantalla ``Haz tu primer compra'' rompia el principio de
+friccion minima al presentar 4 categorias con igual jerarquia visual. El usuario
+no sabia por donde empezar justo en el momento mas critico para la activacion.
+La mejora aplicada: redisenar la pantalla 6 destacando una sola categoria
+recomendada segun el perfil del usuario (para el segmento 18--25: E-commerce con
+5\% cashback como llamada de accion principal), con las demas categorias
+disponibles pero en formato secundario de menor peso visual.
+
+\phoneboxbaimg{artefactos/o6-activaci-n-primer-consumo-mobile-antes.png}{artefactos/o6-activaci-n-primer-consumo-mobile-despues.png}{Antes --- Pantalla 6 Primer consumo}{Después --- Pantalla 6 mejorada}
+
+% =============================================================================
+\subsection{2d. Validacion de Modelo de Revenue y WTP}
+% =============================================================================
+
+\begin{insight}
+\textbf{Nota metodologica.} El enunciado solicita validar las propuestas de valor
+en terminos de \textit{modelo de revenue buscando el mayor WTP}. El objetivo central
+es determinar el \textbf{precio optimo que maximiza la captura de revenue sin dejar
+valor sobre la mesa}, es decir, sin cobrar de menos (subpreciar el valor entregado)
+ni de mas (perder conversion). Se aplica el \textbf{metodo Van Westendorp} con
+cuatro preguntas de precio para identificar la zona de precios aceptables y el punto
+optimo por segmento.
+\end{insight}
+
+\subsubsection{CVP 1 --- Willingness to Pay}
+
+El call center representa USD~1.500.000/ano; el CVP~1 recupera USD~472.500
+resolviendo automaticamente el 35\% de solicitudes. Con deflexion del 35\%
+sobre 50.000 llamadas/mes, el ahorro mensual proyectado es \$140M--\$210M~COP.
+
+\begin{center}
+\begin{tabularx}{\linewidth}{L{6.2cm}C{2.3cm}X}
+\toprule
+\rowcolor{tableheader}
+\textcolor{white}{\textbf{Pregunta Van Westendorp}} &
+\textcolor{white}{\textbf{Rango esperado}} &
+\textcolor{white}{\textbf{Interpretacion}} \\
+\midrule
+A que precio seria tan barato que dudarias de la calidad? &
+$<$\$2.900/mes & Precio minimo aceptable \\
+\addlinespace
+A que precio seria barato pero lo considerarias una buena compra? &
+\$4.900--\$6.900/mes & Optimo inferior \\
+\addlinespace
+A que precio empezaria a parecerte caro pero lo considerarias? &
+\$9.900--\$12.900/mes & Optimo superior \\
+\addlinespace
+A que precio seria tan caro que no lo considerarias? &
+$>$\$19.900/mes & Maximo inaceptable \\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+\textbf{Precio optimo:} \$8.900~COP/mes para el tier premium (punto medio de la
+zona aceptable, maximiza revenue sin perdida de conversion).
+
+\begin{center}
+\begin{tabular}{L{2.5cm}L{4.8cm}C{2.5cm}}
+\toprule
+\rowcolor{tableheader}
+\textcolor{white}{\textbf{Tier}} &
+\textcolor{white}{\textbf{Propuesta}} &
+\textcolor{white}{\textbf{WTP estimado}} \\
+\midrule
+Basico    & Autoservicio estandar, resolucion 48--72h & \$0 adicional \\
+Premium   & Resolucion $<$4h, agente dedicado, alertas proactivas & \$8.900/mes \\
+Comercios & SLA 2h garantizado, dashboard de disputas, reportes & \$45.000--\$80.000/mes \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\subsubsection{CVP 2 --- Willingness to Pay}
+
+El segmento 18--25 es altamente sensible al precio fijo pero acepta costos variables
+asociados a beneficios tangibles e inmediatos. El riesgo es \textbf{subpreciar}
+(cuota cero perpetua, dejando revenue sobre la mesa) o \textbf{sobrepreciar} la
+cuota fija bloqueando la adquisicion.
+
+\begin{center}
+\begin{tabularx}{\linewidth}{L{6.2cm}C{2.3cm}X}
+\toprule
+\rowcolor{tableheader}
+\textcolor{white}{\textbf{Pregunta Van Westendorp}} &
+\textcolor{white}{\textbf{Rango esperado}} &
+\textcolor{white}{\textbf{Interpretacion}} \\
+\midrule
+A que precio seria tan barato que dudarias de la calidad? &
+$<$\$1.900/mes & Precio minimo aceptable \\
+\addlinespace
+A que precio seria barato pero lo considerarias una buena compra? &
+\$3.900--\$5.900/mes & Optimo inferior \\
+\addlinespace
+A que precio empezaria a parecerte caro pero lo considerarias? &
+\$7.900--\$9.900/mes & Optimo superior \\
+\addlinespace
+A que precio seria tan caro que no lo considerarias? &
+$>$\$14.900/mes & Maximo inaceptable \\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+\textbf{Precio optimo:} \$7.900~COP/mes para el tier premium. La cuota de manejo
+del tier basico se mantiene en \$0 en el ano~1 como condicion de entrada al mercado,
+no como diferenciador permanente.
+
+\begin{center}
+\begin{tabular}{L{3cm}L{4.5cm}C{2.8cm}}
+\toprule
+\rowcolor{tableheader}
+\textcolor{white}{\textbf{Fuente de revenue}} &
+\textcolor{white}{\textbf{Mecanismo}} &
+\textcolor{white}{\textbf{Est. mensual/cliente}} \\
+\midrule
+Interchange fee    & Porcentaje de cada transaccion (paga el comercio) & \$4.000--\$8.000 \\
+Cuota de manejo    & Ano 1: \$0 para maximizar adopcion                 & \$0 \\
+Intereses          & Revolving a partir del segundo ciclo               & Principal fuente \\
+Servicios premium  & Cashback acelerado, seguro de compra (opt-in)      & \$4.900--\$9.900 \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\begin{insight}
+\textbf{Conclusion WTP:} El CVP~1 genera ahorro operativo de USD~472.500/ano
+con el modelo basico gratuito, mas revenue incremental de \$8.900/mes por
+tarjetahabiente de alto valor en el tier premium. El CVP~2 no compite en precio
+fijo sino en velocidad e inmediatez, con un precio optimo de \$7.900/mes para el
+tier premium que captura revenue sin bloquear la adquisicion del segmento 18--25.
+\end{insight}
+\end{document}

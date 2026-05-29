@@ -1,0 +1,433 @@
+\documentclass[12pt,letterpaper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[spanish]{babel}
+\usepackage[margin=2.5cm]{geometry}
+\usepackage{booktabs}
+\usepackage{longtable}
+\usepackage{array}
+\usepackage{colortbl}
+\usepackage{xcolor}
+\usepackage{graphicx}
+\usepackage{caption}
+\usepackage{enumitem}
+\usepackage{titlesec}
+\usepackage{parskip}
+\usepackage{hyperref}
+\usepackage{tabularx}
+\usepackage{ragged2e}
+\usepackage{graphicx}
+\usepackage{float}      % <-- agregar aquí
+
+
+% ── Colores corporativos de las tablas ──────────────────────────────────────
+\definecolor{headerblue}{RGB}{31,73,125}
+\definecolor{rowlightblue}{RGB}{217,235,255}
+\definecolor{headerorange}{RGB}{197,90,17}
+\definecolor{rowlightorange}{RGB}{252,228,214}
+\definecolor{darkgray}{RGB}{64,64,64}
+
+% ── Formato de títulos ───────────────────────────────────────────────────────
+\titleformat{\section}{\large\bfseries}{}{0em}{}
+\titleformat{\subsection}{\normalsize\bfseries}{}{0em}{}
+
+\begin{document}
+\begin{titlepage}
+    \centering
+    \vspace*{2cm}
+    
+    {\large Universidad de los Andes \par}
+    \vspace{0.3cm}
+    {\large Ingeniería de Sistemas y Computación \par}
+    \vspace{0.3cm}
+    {\large Architecting Digital Enterprises \par}
+    
+    \vspace{2.5cm}
+    
+    {\LARGE \textbf{Caso de Estudio: Todo Tarjetas S.A.} \par}
+    \vspace{0.8cm}
+    {\Large Taller 2 --- Cultura, Validación UX y Arquitectura de Solución \par}
+    
+    \vspace{3cm}
+    
+    {\large
+        Esteban Castelblanco \\[0.3cm]
+        Julián Baquero \\[0.3cm]
+        Nicolás Casas \par
+    }
+    
+    \vfill
+    
+    {\large Bogotá, Colombia \par}
+    \vspace{0.3cm}
+    {\large 2026 \par}
+    
+    \vspace{2cm}
+\end{titlepage}
+
+
+% ============================================================
+\section*{1. Definición de Cultura para Digital}
+% ============================================================
+
+% ------------------------------------------------------------
+\subsection*{a)  Defina y justifique el modelo estructural del nuevo negocio (SpinOff Vs Nueva Línea de Negocio)  }
+% ------------------------------------------------------------
+
+Se propone una \textbf{Nueva Línea de Negocio Digital} dentro de Todo Tarjetas S.A.\ como
+modelo para escalar los dos CVPs definidos. La transformación se centra en dos pilares:
+
+\begin{itemize}
+  \item \textbf{CVP 1:} un asistente GenAI omnicanal que elimina la fricción del call center.
+  \item \textbf{CVP 2:} un proceso de originación 100\,\% digital con tarjeta virtual instantánea.
+\end{itemize}
+
+Ambos CVPs se benefician de los activos existentes de Todo Tarjetas. Se propone una Nueva
+Línea de Negocio Digital para habilitar los dos CVP priorizados, aprovechando los activos
+existentes de la compañía.
+
+\subsubsection*{Aprovechamiento de Activos Existentes de Todo Tarjetas S.A.}
+
+\begin{itemize}
+  \item \textbf{Infraestructura de procesamiento disponible:} el CVP1 se implementa sobre el
+    switch de procesamiento actual, que ya opera 2\,500 prospectos semanales, eliminando la
+    necesidad de nueva infraestructura tecnológica.
+  \item \textbf{Motor de riesgo reutilizable:} el CVP2 toma como base el motor de reglas
+    existente y le incorpora una capa de ML, evitando el desarrollo de un sistema de evaluación
+    crediticia desde cero.
+  \item \textbf{Base de clientes consolidada:} las relaciones vigentes con bancos emisores y
+    comercios afiliados permiten la adopción inmediata de ambos CVP sin incurrir en costos
+    adicionales de adquisición de clientes.
+  \item \textbf{Licencias regulatorias vigentes:} Todo Tarjetas opera actualmente bajo
+    supervisión de la SFC. Constituir un Spin-Off implicaría tramitar una nueva licencia,
+    proceso que puede tomar entre 12 y 18 meses y genera costos adicionales significativos
+    antes de poder iniciar operaciones.
+\end{itemize}
+
+\subsubsection*{Ventajas sobre el SpinOff — Análisis Específico al Business Case}
+
+\begin{itemize}
+  \item \textbf{Velocidad de llegada al mercado:} una Nueva Línea de Negocio puede estar
+    operativa en 8 a 12 meses, mientras que un Spin-Off requiere entre 18 y 24 meses. En un
+    mercado de procesadoras digitales en rápida evolución, ese tiempo de diferencia representa
+    una ventana competitiva que no puede perderse.
+  \item \textbf{Inversión compartida:} el CAPEX de USD 530\,K proyectado en el Business Case
+    está diseñado sobre una infraestructura compartida con la operación actual de Todo
+    Tarjetas. Bajo un esquema de Spin-Off, esta estructura de costos no sería viable y la
+    inversión requerida sería significativamente mayor.
+  \item \textbf{Despliegue inmediato:} el CVP1 puede implementarse sobre los canales digitales
+    existentes (App y Web) desde el primer ciclo de desarrollo. Un Spin-Off tendría que
+    construir toda la experiencia de usuario desde cero, lo que implica tiempo y costos
+    adicionales no contemplados.
+  \item \textbf{Valor financiero en riesgo:} el VPN de USD 12,2\,M proyectado a 5 años asume
+    una adopción del 60\,\% de los clientes en el primer año. Ese nivel de adopción solo es
+    alcanzable contando con la base de clientes existente — un Spin-Off no tendría esa base y
+    comprometería directamente el retorno financiero del proyecto.
+\end{itemize}
+
+% ============================================================
+\subsection*{b)Estructure el modelo de congruencia para digital que va determinar la Cultura que se requiere para poner en funcionamiento el Digital Business Model, para esto defina conductas  observables, comportamientos y procesos para cada elemento del modelo de congruencia.}
+% ── Espacio para imagen del modelo de congruencia ─────────────────────────
+\begin{figure}[h!]
+  \centering
+  \includegraphics[width=\textwidth]{artefactos/modelo_congruencia.png}
+  \caption{Modelo de Congruencia para Digital — Todo Tarjetas S.A.}
+\end{figure}
+\bigskip
+
+% ============================================================
+
+Teniendo en cuenta la premisa, se presenta el siguiente modelo de congruencia para determinar
+la cultura requerida.
+
+% ── Tabla del modelo de congruencia ────────────────────────────────────────
+\begingroup
+\small
+\setlength{\tabcolsep}{4pt}
+\renewcommand{\arraystretch}{1.3}
+
+\begin{longtable}{%
+  >{\bfseries\RaggedRight}p{1.8cm}
+  >{\RaggedRight}p{2.6cm}
+  >{\RaggedRight}p{2.8cm}
+  >{\RaggedRight}p{2.6cm}
+  >{\RaggedRight}p{2.6cm}
+  >{\RaggedRight}p{2.4cm}}
+
+\rowcolor{headerblue}
+\textcolor{white}{\textbf{Elemento}} &
+\textcolor{white}{\textbf{Estado Actual}} &
+\textcolor{white}{\textbf{Estado Deseado}} &
+\textcolor{white}{\textbf{Conductas Observables}} &
+\textcolor{white}{\textbf{Comportamientos}} &
+\textcolor{white}{\textbf{Procesos}} \\
+\endfirsthead
+
+\rowcolor{headerblue}
+\textcolor{white}{\textbf{Elemento}} &
+\textcolor{white}{\textbf{Estado Actual}} &
+\textcolor{white}{\textbf{Estado Deseado}} &
+\textcolor{white}{\textbf{Conductas Observables}} &
+\textcolor{white}{\textbf{Comportamientos}} &
+\textcolor{white}{\textbf{Procesos}} \\
+\endhead
+
+% ── Fila: Estrategia ──
+\rowcolor{rowlightblue}
+Estrategia &
+Procesamiento transaccional tradicional. Call center como canal primario. OPEX $>$ 2\,\% del mercado. &
+GenAI como palanca de autoservicio. Originación 100\,\% digital. OPEX reducido vía automatización. &
+Decisiones basadas en KPIs digitales. A/B testing de prompts LLM. Priorizar reducción PQR en dashboard. &
+Revisión semanal de métricas CVP. Iteración de modelos ML cada sprint. Benchmarking vs.\ fintechs. &
+OKRs por CVP. Planificación ágil 90 días. Revisión de adopción mensual. \\
+
+% ── Fila: Cultura ──
+Cultura &
+Aversión al riesgo operativo. Cumplimiento SLA call center. Cambios requieren múltiples aprobaciones. &
+Tolerante al fallo controlado. Experimentación con GenAI en sandbox. Cultura de aprendizaje continuo. &
+Compartir post-mortems sin culpa. Celebrar automatización de PQR. Proponer mejoras al bot activamente. &
+Adoptar Scrum para squads CVP. Retrospectivas quincenales abiertas. Mentalidad de producto sobre proyecto. &
+Post-mortems documentados. Daily de squads. Policy de no culpa por fallos en pruebas. \\
+
+% ── Fila: Personas ──
+\rowcolor{rowlightblue}
+Personas &
+Especialistas en call center. Operadores de scoring manual. Analistas de documentos físicos. &
+Ingenieros de IA/ML y Prompt Engineering. Diseñadores UX para originación digital. Product Owners con visión de negocio. &
+Rotación de agentes a squads GenAI. Upskilling en LangChain y OCR. Mentoring en Design Thinking. &
+Autogestión del aprendizaje en IA. Flexibilidad ante cambios de modelo LLM. Colaboración cross-funcional. &
+Programa reskilling agentes call center. Tours of duty de 6 meses. Evaluación 360° con criterio digital. \\
+
+% ── Fila: Tareas ──
+Tareas &
+Resolución PQR por teléfono manual. Digitación manual de documentos. Scoring en 2–3 días hábiles. &
+Autoservicio GenAI 24/7 para PQR. OCR + biometría automática KYC. Scoring automático en $<$ 60 segundos. &
+Uso de LangChain Orchestrator diario. Documentación de prompts en repositorio. Feedback continuo al modelo LLM. &
+Sprints de 2 semanas por CVP. CI/CD para despliegue del bot. A/B testing de flujos de originación. &
+Kanban digital por squad. Definition of Done con criterio de calidad IA. Retraining del modelo cada 30 días. \\
+
+% ── Fila: Estructura ──
+\rowcolor{rowlightblue}
+Estructura &
+Vertical: Call Center + TI + Riesgo en silos. TI Legacy separado del negocio. Decisiones centralizadas en Gerencia. &
+Squads autónomos: Squad GenAI (CVP1) + Squad Originación (CVP2). Product Owners con P\&L propio. Liderazgo distribuido. &
+Decisiones del PO sin aprobación externa. Comunicación directa squads $\leftrightarrow$ core bancario. OKRs públicos por CVP. &
+Equipos autónomos end-to-end. Rotación de roles entre squads. Mentoring cruzado PO $\leftrightarrow$ Ingeniero. &
+Squads/Tribes por CVP. Guilds: Arquitectura · IA · UX. Chapter de Data Engineering compartido. \\
+
+\end{longtable}
+\endgroup
+
+\bigskip
+
+\subsubsection*{CVP1 — Asistente GenAI Omnicanal + Autoservicio}
+
+\begin{itemize}
+  \item \textbf{Estrategia:} el call center representa un costo de USD 1\,500\,000 anuales.
+    El CVP1 permite recuperar USD 472\,500 al resolver automáticamente el 35\,\% de las
+    solicitudes sin intervención humana. Para que esto funcione, la organización debe medir su
+    éxito por la cantidad de casos resueltos digitalmente, no por el volumen de llamadas
+    atendidas.
+  \item \textbf{Cultura:} el asistente de inteligencia artificial cometerá errores en sus
+    primeras etapas de operación. Si la organización no tiene tolerancia al fallo, cualquier
+    error inicial será utilizado como justificación para cancelar el proyecto. La cultura debe
+    enfocarse en la mejora continua y celebrar el aprendizaje iterativo.
+  \item \textbf{Personas:} los agentes del call center son quienes mejor conocen los casos
+    reales de los clientes. En lugar de sentirse desplazados, deben ser protagonistas del
+    proceso: su conocimiento es insumo clave para entrenar y mejorar el modelo de inteligencia
+    artificial.
+  \item \textbf{Tareas:} el asistente requiere revisión y ajuste permanente. Esto implica
+    equipos de trabajo que operen en ciclos cortos de dos semanas, analizando métricas de
+    resolución y realizando mejoras continuas al modelo.
+  \item \textbf{Estructura:} el equipo responsable del CVP1 necesita acceso directo a los
+    sistemas de procesamiento y gestión de clientes sin depender de aprobaciones de comités.
+    La estructura organizacional debe facilitar esa autonomía, no convertirse en un obstáculo.
+\end{itemize}
+
+\subsubsection*{CVP2 — Originación 100\,\% Digital + Tarjeta Virtual Instantánea}
+
+\begin{itemize}
+  \item \textbf{Estrategia:} actualmente se destinan USD 1\,800\,000 anuales a la producción y
+    entrega física de tarjetas plásticas. La estrategia debe reorientar sus métricas de éxito:
+    cada tarjeta virtual emitida representa un ahorro directo frente a cada tarjeta física
+    producida.
+  \item \textbf{Cultura:} los analistas de riesgo pueden percibir el scoring automático como
+    una amenaza a su rol. La organización debe comunicar con claridad que el CVP2 no los
+    reemplaza, sino que los libera de tareas repetitivas para que puedan concentrarse en casos
+    complejos de mayor valor.
+  \item \textbf{Personas:} la validación biométrica y el reconocimiento de documentos requieren
+    perfiles técnicos especializados que hoy no existen dentro de la compañía. Los equipos
+    deben integrar talento externo especializado con el equipo interno de riesgo, trabajando de
+    manera complementaria.
+  \item \textbf{Tareas:} el reconocimiento facial puede fallar en condiciones de baja
+    iluminación u otros factores externos. Las responsabilidades del equipo no se limitan al
+    flujo ideal de aprobación — también incluyen el control de calidad del modelo, el manejo
+    de excepciones y el diseño de rutas alternas para los casos que no siguen el camino
+    estándar.
+  \item \textbf{Estructura:} el equipo de originación digital debe tener autonomía para ajustar
+    el motor de scoring sin requerir aprobación gerencial para cada modificación. Sin esa
+    autonomía, los ciclos de desarrollo se bloquean y el ritmo de mejora del CVP se detiene.
+\end{itemize}
+
+% ============================================================
+\subsection*{c) Teniendo como contexto el framework de análisis de cultura digital mencionado en la figura que se presenta a continuación, y el cual fue 
+revisado en clase, estructure y realice un análisis que permita definir la cultura digital requerida en Todo Tarjetas para asegurar el éxito de la 
+conceptuación, construcción y adopción de los CVP que definió.     
+Es importante que esta cultura habilite la transformación del negocio, movilice 
+conductas observables y comportamientos, así como genere hábitos de trabajo basados en los siguientes elementos que caracterizan a las 
+organizaciones maduras digitales}
+
+% ============================================================
+% ── Espacio para imagen del framework de cultura digital ────────────────────
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=\textwidth]{artefactos/framework_cultura.png}
+  \caption{Framework de Cultura Digital — Rating 1 a 5 (Early, Developing, Maturing)}
+\end{figure}
+
+A continuación se analiza cada dimensión del framework de cultura digital, identificando el
+estado actual, el estado objetivo, la calificación y la iniciativa clave asociada.
+
+% ── Tabla de dimensiones de cultura digital ────────────────────────────────
+\begingroup
+\small
+\setlength{\tabcolsep}{4pt}
+\renewcommand{\arraystretch}{1.35}
+
+\begin{longtable}{%
+  >{\bfseries\RaggedRight}p{2cm}
+  >{\RaggedRight}p{3.2cm}
+  >{\RaggedRight}p{3.6cm}
+  >{\centering}p{1.1cm}
+  >{\centering}p{1.5cm}
+  >{\RaggedRight}p{3.4cm}}
+
+\rowcolor{headerblue}
+\textcolor{white}{\textbf{Dimensión}} &
+\textcolor{white}{\textbf{FROM}} &
+\textcolor{white}{\textbf{TO}} &
+\textcolor{white}{\textbf{Actual (1–5)}} &
+\textcolor{white}{\textbf{Objetivo Año 2}} &
+\textcolor{white}{\textbf{Iniciativa Clave}} \\
+\endfirsthead
+
+\rowcolor{headerblue}
+\textcolor{white}{\textbf{Dimensión}} &
+\textcolor{white}{\textbf{FROM}} &
+\textcolor{white}{\textbf{TO}} &
+\textcolor{white}{\textbf{Actual (1–5)}} &
+\textcolor{white}{\textbf{Objetivo Año 2}} &
+\textcolor{white}{\textbf{Iniciativa Clave}} \\
+\endhead
+
+% ── Agilidad ──
+\rowcolor{rowlightblue}
+Agilidad &
+Los cambios en el sistema de procesamiento requieren entre 4 y 6 semanas de aprobación por comités de arquitectura. &
+Ciclos de desarrollo de 2 semanas por CVP, despliegue continuo del asistente con control de versiones y capacidad de implementar cambios en menos de 2 días. &
+2,0 & 4,0 &
+Adoptar metodología Scrum. Implementar integración y despliegue continuo para el modelo de IA. Eliminar comités de aprobación para ajustes operativos. \\
+
+% ── Apetito al riesgo ──
+Apetito al riesgo &
+La cultura de cumplimiento bancario genera aversión total al error. Cualquier fallo del asistente se interpreta como razón suficiente para cancelar el proyecto. &
+Ambiente controlado de pruebas para el modelo de IA con tráfico limitado. Los errores se documentan como aprendizajes. Se realizan pruebas A/B de manera sistemática. &
+1,5 & 4,0 &
+Crear un sandbox de innovación dedicado. Establecer una política de no culpabilización por errores. Proteger un presupuesto de innovación de USD 60\,K independiente del presupuesto operativo. \\
+
+% ── Toma de decisiones ──
+\rowcolor{rowlightblue}
+Toma de decisiones &
+Las decisiones de evaluación crediticia las toma el Gerente de Riesgo de manera manual y sin acceso a datos en tiempo real. &
+Panel de indicadores en tiempo real para el asistente y el scoring. El Product Owner toma decisiones de producto de manera autónoma. Las aprobaciones crediticias se realizan de forma automática. &
+1,5 & 4,5 &
+Implementar panel de indicadores por CVP en tiempo real. Capacitar a los líderes de producto en análisis de datos. Adoptar modelos de scoring explicables que generen confianza en la toma de decisiones automatizada. \\
+
+% ── Liderazgo ──
+Liderazgo &
+La Gerencia de Operaciones aprueba todos los cambios en canales digitales y procesos de riesgo, centralizando las decisiones. &
+Los líderes de producto tienen responsabilidad directa sobre los resultados financieros del CVP1 y CVP2. Los equipos operan con autonomía real y cuentan con acompañamiento de liderazgo. &
+2,0 & 4,0 &
+Implementar programa de liderazgo ágil. Otorgar autoridad real a los líderes de producto. Eliminar la capa de aprobación intermedia que ralentiza la ejecución. \\
+
+% ── Pasión por el trabajo ──
+\rowcolor{rowlightblue}
+Pasión por el trabajo &
+Alta rotación en el call center. Los agentes no perciben un propósito más allá de resolver el volumen diario de llamadas. &
+Propósito claro: automatizar las tareas repetitivas para mejorar la experiencia del cliente. Los agentes se convierten en entrenadores del asistente y sienten orgullo por los resultados de satisfacción. &
+2,5 & 4,5 &
+Comunicar la misión de manera consistente: eliminar los tiempos de espera para el cliente. Involucrar activamente a los agentes del call center en el entrenamiento del modelo de inteligencia artificial. \\
+
+% ── Estilo de trabajo ──
+Estilo de trabajo &
+El call center, TI y Riesgo operan de forma aislada, sin herramientas ni métricas compartidas entre áreas. &
+Equipos multidisciplinarios conformados por ingenieros, analistas de riesgo y diseñadores de experiencia. Todos comparten métricas e indicadores en tiempo real. &
+1,5 & 4,5 &
+Implementar modelo de equipos por CVP. Estandarizar herramientas de trabajo colaborativo. Realizar sesiones mensuales de innovación con participación de todas las áreas. \\
+
+\end{longtable}
+\endgroup
+
+% ============================================================
+\subsection*{d) Costo o riesgo de no hacer la evolución cultural requerida}
+% ============================================================
+
+\subsubsection*{1. Corto Plazo (0–12 meses)}
+
+\begin{itemize}
+  \item \textbf{Pérdida de talento digital clave:} sin una cultura ágil ni ownership real sobre
+    los CVPs, los perfiles especializados en modelos de lenguaje, biometría y product
+    management que se contraten para el CVP1 y el CVP2 migrarán a fintechs competidoras en
+    menos de 12 meses.
+  \item \textbf{Adopción limitada del asistente GenAI:} si el equipo del call center no
+    interioriza el cambio cultural, seguirá resolviendo manualmente las solicitudes que el CVP1
+    debería atender de forma automática. El ahorro proyectado de USD 472\,500 anuales no se
+    materializaría en el Año 1.
+  \item \textbf{Costos operativos duplicados:} mantener el call center tradicional en paralelo
+    con el asistente digital durante un período prolongado de resistencia interna generaría
+    costos operativos superiores a los del modelo actual, eliminando el beneficio financiero
+    del CVP1.
+  \item \textbf{Deterioro de la experiencia del cliente:} la coexistencia de un canal digital
+    inconsistente con un proceso de call center manual generaría contradicciones en el
+    servicio, afectando directamente el NPS y acelerando la migración de clientes hacia los
+    competidores.
+  \item \textbf{Pérdida de la ventana competitiva del CVP2:} el segmento de 18 a 25 años que
+    el CVP2 busca capturar no esperará. Competidores digitales ya operativos pueden ocupar ese
+    espacio mientras Todo Tarjetas resuelve resistencias internas al cambio.
+\end{itemize}
+
+\subsubsection*{2. Mediano Plazo (1–3 años)}
+
+\begin{itemize}
+  \item \textbf{Deuda técnica en el asistente GenAI:} sin una cultura de mejora continua y
+    despliegue iterativo, el modelo del CVP1 dejará de actualizarse y perderá precisión
+    progresivamente, convirtiéndose en un sistema obsoleto que genera más fricción que la que
+    resuelve.
+  \item \textbf{Pérdida de participación en el segmento joven:} si el CVP2 no logra adopción
+    en los primeros 18 meses por resistencia de los analistas de riesgo al scoring automático,
+    los USD 1\,580\,000 en ahorros proyectados no se realizarán y el segmento 18–25 quedará
+    consolidado en manos de competidores digitales.
+  \item \textbf{Incapacidad para atraer talento especializado:} una organización percibida como
+    culturalmente tradicional tiene dificultades estructurales para reclutar ingenieros de IA,
+    diseñadores de experiencia digital y data scientists, perfiles críticos para sostener y
+    evolucionar ambos CVPs en el tiempo.
+  \item \textbf{Inversión tecnológica sin retorno:} los USD 2,14\,M comprometidos en
+    plataforma, licencias de LLM y motor de originación digital generarán un retorno cercano
+    a cero si la organización no adopta los comportamientos necesarios para operar y escalar
+    los CVPs.
+  \item \textbf{Riesgo de disrupción competitiva irreversible:} fintechs nativas digitales que
+    ya operan en el Maturing Cluster pueden replicar las funcionalidades del CVP1 y CVP2 en
+    menos tiempo del que le tomaría a Todo Tarjetas completar su transformación cultural,
+    comprometiendo la relevancia de la compañía en el mercado de procesamiento digital.
+\end{itemize}
+
+\bigskip
+
+La evolución cultural es la condición habilitante de ambos CVPs. El CVP1 requiere una cultura
+ágil, tolerante al fallo y orientada a la mejora continua, pues sin ella el primer error del
+asistente GenAI se convertirá en argumento para abandonar el proyecto antes de que demuestre
+su valor real. Por su parte, el CVP2 requiere una cultura \textit{data-driven} que genere
+confianza en el scoring automático y libere a los analistas de riesgo de la validación manual,
+ya que sin ese cambio de mentalidad el proceso de originación digital seguirá siendo tan lento
+y costoso como el modelo físico que busca reemplazar.
+
+\end{document}

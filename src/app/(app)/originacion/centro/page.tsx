@@ -106,7 +106,7 @@ export default function Centro() {
         </div>
       </div>
 
-      <BottomNav active="Tarjeta" />
+      <BottomNav active="Inicio" variant="originacion" />
     </Screen>
   );
 }

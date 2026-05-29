@@ -1,11 +1,15 @@
 import Link from "next/link";
 import { ArrowRight, ShieldCheck, Sparkles } from "lucide-react";
+import { PhonePreview } from "@/components/PhonePreview";
 
 const cvp1Screens = [
+  { num: "0", title: "Bienvenida · entrada unificada ✦", href: "/bienvenida" },
   { num: "1", title: "Home de servicio", href: "/servicio" },
+  { num: "1b", title: "Notificación Proactiva ✦ nuevo", href: "/servicio/alerta" },
   { num: "2", title: "Chat IA", href: "/servicio/chat" },
   { num: "3", title: "Reportar Cargo · selección", href: "/servicio/reportar" },
   { num: "4", title: "Reporte Cargo · detalles", href: "/servicio/reportar/detalles" },
+  { num: "4b", title: "Confirmar Reporte ✦ nuevo", href: "/servicio/reportar/revisar" },
   { num: "5", title: "Reporte Radicado", href: "/servicio/reportar/confirmacion" },
   { num: "6", title: "Bloqueo / Tarjeta Bloqueada", href: "/servicio/bloqueo" },
   { num: "7", title: "Trazabilidad del caso", href: "/servicio/caso" },
@@ -14,15 +18,18 @@ const cvp1Screens = [
 ];
 
 const cvp2Screens = [
+  { num: "O0", title: "Recuperación de abandono ✦ nuevo", href: "/originacion/recuperacion" },
   { num: "O1", title: "Landing", href: "/originacion" },
   { num: "O2", title: "Registro y Consentimiento", href: "/originacion/registro" },
   { num: "O3", title: "Validación de identidad", href: "/originacion/validacion" },
   { num: "O4", title: "Perfilamiento", href: "/originacion/perfilamiento" },
+  { num: "O4b", title: "Explicación de límite ✦ nuevo", href: "/originacion/explicacion" },
   { num: "O5", title: "Emisión virtual", href: "/originacion/emision" },
   { num: "O6", title: "Activación primer compra", href: "/originacion/activacion" },
   { num: "O7", title: "Centro post-alta", href: "/originacion/centro" },
   { num: "O9", title: "Error de verificación", href: "/originacion/error" },
   { num: "O10", title: "Solicitud en revisión", href: "/originacion/revision" },
+  { num: "O11", title: "Solicitud rechazada ✦ nuevo", href: "/originacion/rechazo" },
 ];
 
 export default function Home() {
@@ -30,9 +37,12 @@ export default function Home() {
     <main className="min-h-screen px-6 py-12 lg:py-20">
       <div className="max-w-6xl mx-auto">
         <div className="mb-12">
-          <span className="inline-block text-[11px] tracking-[0.2em] uppercase text-[var(--primary)] font-bold mb-3">
-            Architecting Digital Enterprise
-          </span>
+          <div className="flex items-start justify-between mb-3">
+            <span className="inline-block text-[11px] tracking-[0.2em] uppercase text-[var(--primary)] font-bold">
+              Architecting Digital Enterprise
+            </span>
+            <PhonePreview />
+          </div>
           <h1 className="text-4xl lg:text-5xl font-bold tracking-tight mb-3">
             Todo Tarjetas S.A. <span className="text-[var(--text-muted)]">·</span>{" "}
             <span className="text-[var(--text-muted)]">App Cliente</span>
@@ -51,7 +61,7 @@ export default function Home() {
             desc="Resolver solicitudes frecuentes en minutos, 24/7, con escalamiento contextual cuando aplique."
             icon={<Sparkles size={20} />}
             href="/servicio"
-            count={9}
+            count={11}
           />
           <FlowCard
             tag="Línea Verde 2 · CVP 2"
@@ -59,7 +69,7 @@ export default function Home() {
             desc="Onboarding completo y emisión virtual instantánea para maximizar conversión en el segmento 18–25."
             icon={<ShieldCheck size={20} />}
             href="/originacion"
-            count={10}
+            count={13}
           />
         </div>
 

@@ -37,11 +37,11 @@ export default function ReporteRadicado() {
       </div>
 
       <div className="px-5 mt-auto pb-4 space-y-2">
-        <Link href="/servicio/caso" className="btn-primary">
-          Ver estado del caso
-        </Link>
-        <Link href="/servicio" className="btn-outline">
+        <Link href="/servicio" className="btn-primary">
           Volver al inicio
+        </Link>
+        <Link href="/servicio/caso" className="btn-outline">
+          Ver estado del caso
         </Link>
       </div>
     </Screen>

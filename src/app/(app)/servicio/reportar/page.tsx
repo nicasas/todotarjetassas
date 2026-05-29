@@ -15,9 +15,12 @@ export default function ReportarSeleccion() {
     <Screen>
       <ScreenHeader title="Reportar Cargo" back="/servicio/chat" />
       <div className="px-5 pt-2 pb-4">
-        <p className="text-[13px] text-[var(--text-muted)] mb-4">
-          Selecciona las transacciones que no reconoces. Las analizaremos juntos.
-        </p>
+        <div className="flex items-center gap-3 mb-4">
+          <span className="h-px flex-shrink-0 w-4" style={{ background: "var(--primary)", opacity: 0.7 }} />
+          <p className="text-[10px] font-bold tracking-[0.2em] uppercase" style={{ color: "var(--text-dim)" }}>
+            Seleccionar transacción
+          </p>
+        </div>
         <div className="space-y-2 mb-5">
           {transactions.map((t) => (
             <div
@@ -39,7 +42,7 @@ export default function ReportarSeleccion() {
                 <p className="text-[13px] font-semibold">{t.name}</p>
                 <p className="text-[11px] text-[var(--text-muted)]">{t.date}</p>
               </div>
-              <p className="text-[13px] font-bold">${t.amount}</p>
+              <p className="text-[13px] font-bold">${t.amount} <span className="text-[10px] font-medium" style={{ color: "var(--text-muted)" }}>USD</span></p>
             </div>
           ))}
         </div>

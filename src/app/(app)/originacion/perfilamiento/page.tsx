@@ -1,97 +1,214 @@
 import Link from "next/link";
-import { Check } from "lucide-react";
+import { Check, CreditCard } from "lucide-react";
 import { Screen, ScreenHeader } from "@/components/Screen";
+
+const ocupaciones = ["Estudiante", "Empleado", "Independ.", "Otro"] as const;
+const ingresos = ["$1M – $2M COP", "$2M – $4M COP", "$4M+ COP"] as const;
+const propositos = ["Compras online", "Suscripciones", "Viajes", "Diario"] as const;
+
+const activeOcupacion = "Estudiante";
+const activeIngreso = "$1M – $2M COP";
+const activePropositos: string[] = ["Compras online", "Suscripciones"];
 
 export default function Perfilamiento() {
   return (
     <Screen>
-      <ScreenHeader title="Atrás" back="/originacion/validacion" step="PASO 3 DE 7" />
+      <ScreenHeader title="Atrás" back="/originacion/validacion" step="PASO 4 DE 7" />
 
-      <div className="px-5 pt-2 pb-4">
-        <h2 className="text-2xl font-bold mb-1.5 tracking-tight">
+      {/* Barra segmentada */}
+      <div className="px-5 mb-4">
+        <div className="flex gap-1">
+          {Array.from({ length: 7 }).map((_, i) => (
+            <div
+              key={i}
+              className="flex-1 h-1 rounded-full"
+              style={{ background: i < 4 ? "var(--primary)" : "var(--border-strong)" }}
+            />
+          ))}
+        </div>
+      </div>
+
+      <div className="px-5 pt-0 pb-6">
+        <h2 className="text-[24px] font-bold tracking-tight mb-1">
           Cuéntanos sobre ti
         </h2>
-        <p className="text-[13px] text-[var(--text-muted)] mb-5">
-          Esta información nos ayuda a definir el cupo y las condiciones de tu tarjeta.
+        <p className="text-[13px] mb-5" style={{ color: "var(--text-muted)" }}>
+          Responde unas preguntas rápidas para personalizar tu experiencia
         </p>
 
-        <p className="text-[10px] tracking-widest uppercase text-[var(--text-dim)] font-bold mb-2">
-          Nivel de ingresos
+        {/* OCUPACIÓN */}
+        <p
+          className="text-[10px] tracking-[0.2em] uppercase font-bold mb-2"
+          style={{ color: "var(--text-dim)" }}
+        >
+          Ocupación
+        </p>
+        <div className="flex gap-2 mb-4">
+          {ocupaciones.map((o) => (
+            <button
+              key={o}
+              className="flex-1 px-2 py-1.5 rounded-xl text-[11px] font-semibold transition"
+              style={{
+                background: o === activeOcupacion ? "var(--primary)" : "var(--surface)",
+                border: o === activeOcupacion ? "none" : "1px solid var(--border)",
+                color: o === activeOcupacion ? "#fff" : "var(--text-muted)",
+              }}
+            >
+              {o}
+            </button>
+          ))}
+        </div>
+
+        {/* RANGO DE INGRESOS */}
+        <p
+          className="text-[10px] tracking-[0.2em] uppercase font-bold mb-2"
+          style={{ color: "var(--text-dim)" }}
+        >
+          Rango de ingresos
         </p>
         <div className="space-y-2 mb-4">
-          <Pill label="$1M – $3M COP" />
-          <Pill label="$3M – $6M COP" active />
-          <Pill label="$6M – $12M COP" />
-          <Pill label="$12M+ COP" />
+          {ingresos.map((opt) => {
+            const active = opt === activeIngreso;
+            return (
+              <div
+                key={opt}
+                className="flex items-center justify-between rounded-xl px-4 py-3"
+                style={{
+                  background: "var(--surface)",
+                  border: active
+                    ? "1.5px solid var(--primary)"
+                    : "1px solid var(--border)",
+                }}
+              >
+                <div>
+                  <p className="text-[13px] font-semibold">{opt}</p>
+                  <p
+                    className="text-[10px]"
+                    style={{ color: "var(--text-muted)" }}
+                  >
+                    Ingreso mensual
+                  </p>
+                </div>
+                <div
+                  className="w-5 h-5 rounded-full flex items-center justify-center flex-shrink-0"
+                  style={{
+                    background: active ? "var(--primary)" : "transparent",
+                    border: active ? "none" : "1.5px solid var(--border-strong)",
+                  }}
+                >
+                  {active && (
+                    <Check size={10} strokeWidth={3} color="white" />
+                  )}
+                </div>
+              </div>
+            );
+          })}
         </div>
 
-        <p className="text-[10px] tracking-widest uppercase text-[var(--text-dim)] font-bold mb-2">
-          Cupo deseado
+        {/* PROPÓSITO */}
+        <p
+          className="text-[10px] tracking-[0.2em] uppercase font-bold mb-2"
+          style={{ color: "var(--text-dim)" }}
+        >
+          Propósito
         </p>
-        <div className="card p-4 mb-4">
-          <div className="flex items-end justify-between mb-3">
-            <p className="text-2xl font-bold tracking-tight">$2,500,000</p>
-            <span className="text-[10px] font-bold text-[var(--success)]">¡Aprobado!</span>
-          </div>
-          <div className="relative h-1.5 rounded-full bg-[var(--surface-2)]">
+        <div className="flex flex-wrap gap-2 mb-5">
+          {propositos.map((p) => {
+            const active = activePropositos.includes(p);
+            return (
+              <button
+                key={p}
+                className="px-3 py-1.5 rounded-xl text-[12px] font-semibold transition"
+                style={{
+                  background: active ? "var(--primary)" : "var(--surface)",
+                  border: active ? "none" : "1px solid var(--border)",
+                  color: active ? "#fff" : "var(--text-muted)",
+                }}
+              >
+                {p}
+              </button>
+            );
+          })}
+        </div>
+
+        {/* LÍMITE DE CRÉDITO ESTIMADO */}
+        <div
+          className="rounded-2xl p-4 mb-4"
+          style={{
+            background: "var(--surface)",
+            border: "1px solid var(--border)",
+          }}
+        >
+          <p
+            className="text-[10px] tracking-[0.2em] uppercase font-bold mb-2"
+            style={{ color: "var(--text-dim)" }}
+          >
+            Límite de crédito estimado
+          </p>
+          <p className="text-[32px] font-black tracking-tight leading-none mb-0.5">
+            $2.500.000
+          </p>
+          <p
+            className="text-[12px] mb-3"
+            style={{ color: "var(--text-muted)" }}
+          >
+            COP / mes
+          </p>
+          <div
+            className="h-1.5 rounded-full overflow-hidden mb-1.5"
+            style={{ background: "var(--surface-2)" }}
+          >
             <div
-              className="absolute inset-y-0 left-0 rounded-full bg-[var(--primary)]"
-              style={{ width: "55%" }}
-            />
-            <div
-              className="absolute -top-1 w-3.5 h-3.5 rounded-full bg-white border-2 border-[var(--primary)]"
-              style={{ left: "53%" }}
+              className="h-full rounded-full"
+              style={{ width: "50%", background: "var(--primary)" }}
             />
           </div>
-          <div className="flex justify-between text-[10px] text-[var(--text-muted)] mt-1.5">
-            <span>$500K</span>
-            <span>$5M</span>
+          <p className="text-[10px]" style={{ color: "var(--text-dim)" }}>
+            Basado en tu perfil y datos proporcionados
+          </p>
+        </div>
+
+        {/* ¡APROBADO! */}
+        <div
+          className="flex items-center gap-3 rounded-2xl p-3.5 mb-5"
+          style={{
+            background: "rgba(34,197,94,0.08)",
+            border: "1px solid rgba(34,197,94,0.25)",
+          }}
+        >
+          <div
+            className="w-9 h-9 rounded-full flex items-center justify-center flex-shrink-0"
+            style={{ background: "rgba(34,197,94,0.15)" }}
+          >
+            <Check
+              size={16}
+              strokeWidth={3}
+              style={{ color: "var(--success)" }}
+            />
+          </div>
+          <div>
+            <p
+              className="text-[14px] font-bold"
+              style={{ color: "var(--success)" }}
+            >
+              ¡Aprobado!
+            </p>
+            <p
+              className="text-[11px]"
+              style={{ color: "var(--text-muted)" }}
+            >
+              Tu crédito ha sido pre-aprobado
+            </p>
           </div>
         </div>
 
-        <div className="card p-3 mb-4 space-y-2.5">
-          <Toggle label="Compras en línea" on />
-          <Toggle label="Compras presenciales" on />
-          <Toggle label="Avances de efectivo" />
-        </div>
-
-        <Link href="/originacion/emision" className="btn-primary">
-          Ver mi tarjeta →
+        <Link
+          href="/originacion/explicacion"
+          className="btn-primary flex items-center gap-2"
+        >
+          <CreditCard size={16} /> Ver mi tarjeta
         </Link>
       </div>
     </Screen>
-  );
-}
-
-function Pill({ label, active }: { label: string; active?: boolean }) {
-  return (
-    <div
-      className={`p-3 rounded-xl border text-[13px] font-semibold flex items-center justify-between ${
-        active
-          ? "bg-[var(--primary-soft)] border-[var(--primary)]"
-          : "bg-[var(--surface)] border-[var(--border)]"
-      }`}
-    >
-      <span>{label}</span>
-      {active && <Check size={14} className="text-[var(--primary)]" strokeWidth={3} />}
-    </div>
-  );
-}
-
-function Toggle({ label, on }: { label: string; on?: boolean }) {
-  return (
-    <div className="flex items-center justify-between">
-      <span className="text-[13px]">{label}</span>
-      <span
-        className={`w-9 h-5 rounded-full relative transition ${
-          on ? "bg-[var(--primary)]" : "bg-[var(--surface-3)]"
-        }`}
-      >
-        <span
-          className="absolute top-0.5 w-4 h-4 rounded-full bg-white transition"
-          style={{ left: on ? "calc(100% - 18px)" : "2px" }}
-        />
-      </span>
-    </div>
   );
 }

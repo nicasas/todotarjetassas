@@ -39,7 +39,7 @@ export default function Bloqueo() {
 
       <div className="px-5 mt-auto pb-4 space-y-2">
         <Link href="/servicio" className="btn-primary">
-          Desbloquear tarjeta
+          Reactivar Tarjeta
         </Link>
         <Link href="#" className="btn-outline">
           Solicitar reposición
