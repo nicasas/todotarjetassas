@@ -68,7 +68,7 @@ export default function AlertaProactiva() {
           tu historial de compras.
         </p>
 
-        <Link href="/servicio/chat" className="btn-primary mb-3">
+        <Link href="/servicio/reportar" className="btn-primary mb-3">
           Sí, reportar este cargo
         </Link>
         <Link href="/servicio" className="btn-outline mb-6">
